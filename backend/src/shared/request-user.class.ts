@@ -1,9 +1,8 @@
 export class RequestUser {
-  scope: string
-  email_verified: string
-  name: string
-  preferred_username: string
-  given_name: string
-  family_name: string
+  userId: string
+  username: string
   email: string
+  fullname: string
+  firstname: string
+  lastname: string
 }

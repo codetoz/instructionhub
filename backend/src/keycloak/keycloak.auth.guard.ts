@@ -6,6 +6,7 @@ import { AuthGuard } from '@nestjs/passport'
 import { ExecutionContext } from '@nestjs/common'
 import * as jwt from 'jsonwebtoken'
 import { ExtractJwt } from 'passport-jwt'
+import { KeycloakJwtPayload } from './keycloak.jwt-payload'
 import { RequestUser } from 'src/shared/request-user.class'
 
 @Injectable()
@@ -16,16 +17,15 @@ export class KeycloakAuthGuard extends AuthGuard('bearer') {
 
     const token = ExtractJwt.fromAuthHeaderAsBearerToken()(request)
     if (token) {
-      const decodedToken = jwt.decode(token) as RequestUser
+      const decodedToken = jwt.decode(token) as KeycloakJwtPayload
       request.user = {
-        scope: decodedToken.scope,
-        email_verified: decodedToken.email_verified,
-        name: decodedToken.name,
-        preferred_username: decodedToken.preferred_username,
-        given_name: decodedToken.given_name,
-        family_name: decodedToken.family_name,
+        userId: decodedToken.sub,
+        username: decodedToken.preferred_username,
         email: decodedToken.email,
-      }
+        fullname: decodedToken.name,
+        firstname: decodedToken.given_name,
+        lastname: decodedToken.family_name,
+      } as RequestUser
     }
 
     return request.user
