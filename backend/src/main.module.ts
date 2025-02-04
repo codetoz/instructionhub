@@ -1,6 +1,10 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { EnvConfig } from './config/env'
+import { HelloworldModule } from './app/helloworld/helloworld.module'
+import { KeycloakAuthGuard } from './keycloak/keycloak.auth.guard'
+import { PassportModule } from '@nestjs/passport'
+import { KeycloakStrategy } from './keycloak/keycloak.strategy'
 
 @Module({
   imports: [
@@ -10,8 +14,10 @@ import { EnvConfig } from './config/env'
       expandVariables: true,
       isGlobal: true,
     }),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    HelloworldModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [KeycloakStrategy, KeycloakAuthGuard],
 })
 export class MainModule {}
