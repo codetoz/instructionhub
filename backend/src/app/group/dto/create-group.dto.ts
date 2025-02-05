@@ -1,8 +1,13 @@
-import { IsString, IsEnum } from 'class-validator'
+import { IsString, IsEnum, IsNotEmpty } from 'class-validator'
 import { GroupType } from '../enum/group-type.enum'
 
 export class CreateGroupDto {
   @IsString()
+  @IsNotEmpty()
+  slug: string
+
+  @IsString()
+  @IsNotEmpty()
   name: string
 
   @IsString()

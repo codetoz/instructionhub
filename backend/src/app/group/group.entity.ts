@@ -8,11 +8,14 @@ import {
 } from 'typeorm'
 import { GroupType } from './enum/group-type.enum'
 
-@Unique(['createdBy', 'name'])
+@Unique(['createdBy', 'slug'])
 @Entity()
 export class Group {
   @PrimaryGeneratedColumn('uuid') // UUID as the primary key
   id: string
+
+  @Column()
+  slug: string
 
   @Column()
   name: string

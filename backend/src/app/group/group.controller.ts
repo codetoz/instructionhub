@@ -12,7 +12,7 @@ import {
   AuthenticatedRequest,
   KeycloakAuthGuard,
 } from 'src/keycloak/keycloak.auth.guard'
-import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiQuery, ApiResponse } from '@nestjs/swagger'
 import { RequestUser } from 'src/shared/request-user.class'
 import { CreateGroupDto } from './dto/create-group.dto'
 import { Group } from './group.entity'
@@ -26,20 +26,19 @@ export class GroupController {
   @ApiBearerAuth()
   @ApiResponse({ status: 201, description: 'Group created successfully.' })
   async createGroup(
-    @Req() req: { user: RequestUser },
+    @Req() { user }: AuthenticatedRequest,
     @Body() createGroupDto: CreateGroupDto,
   ): Promise<Group> {
-    return await this.groupService.createGroup(req.user, createGroupDto)
+    return await this.groupService.createGroup(user?.id, createGroupDto)
   }
 
   @Get()
-  @UseGuards(KeycloakAuthGuard)
-  @ApiBearerAuth()
+  @ApiQuery({ name: 'creator', required: false })
   @ApiResponse({ status: 200, description: 'List of groups.' })
   async getGroups(
-    @Req() { user }: AuthenticatedRequest,
+    @Req() req: any,
     @Query('creator') creator: string,
   ): Promise<Group[]> {
-    return await this.groupService.getGroups(creator, user?.id)
+    return await this.groupService.getGroups(creator, req?.user?.id)
   }
 }

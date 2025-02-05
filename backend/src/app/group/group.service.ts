@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Group } from './group.entity'
 import { CreateGroupDto } from './dto/create-group.dto'
-import { RequestUser } from 'src/shared/request-user.class'
 import { GroupType } from './enum/group-type.enum'
 
 @Injectable()
@@ -15,19 +14,20 @@ export class GroupService {
 
   // Create a new group
   async createGroup(
-    user: RequestUser,
+    requestUserId: string,
     createGroupDto: CreateGroupDto,
   ): Promise<Group> {
     const group = this.groupRepository.create({
       name: createGroupDto.name,
+      slug: createGroupDto.slug,
       description: createGroupDto.description,
       type: createGroupDto.type,
-      createdBy: user.id,
+      createdBy: requestUserId,
     })
     try {
       return await this.groupRepository.save(group)
     } catch (err) {
-      Logger.error(typeof err, 'GroupService')
+      Logger.error('error: ' + err, 'GroupService')
       throw new ConflictException('Group already exists')
     }
   }

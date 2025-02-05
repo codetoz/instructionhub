@@ -8,6 +8,7 @@ import { KeycloakStrategy } from './keycloak/keycloak.strategy'
 import { HelloworldModule } from './app/helloworld/helloworld.module'
 import { GroupModule } from './app/group/group.module'
 import { TypeOrmConfigService } from './config/database/typeorm.service'
+import { InstructionModule } from './app/instruction/instruction.module'
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { TypeOrmConfigService } from './config/database/typeorm.service'
 
     HelloworldModule,
     GroupModule,
+    InstructionModule,
   ],
   controllers: [],
   providers: [KeycloakStrategy, KeycloakAuthGuard],
