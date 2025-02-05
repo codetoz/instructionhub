@@ -22,6 +22,7 @@ concurrency:
 
 jobs:
   build:
+    environment: iHUB
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
