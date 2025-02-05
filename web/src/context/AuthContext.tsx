@@ -1,8 +1,9 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import keycloak from '../keycloak';
 
 interface AuthContextProps {
   user: any;
-  login: (userData: any) => void;
+  login: () => void;
   logout: () => void;
 }
 
@@ -15,12 +16,26 @@ const AuthContext = createContext<AuthContextProps>({
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<any>(null);
 
-  const login = (userData: any) => {
-    setUser(userData);
+  useEffect(() => {
+    keycloak.init({ onLoad: 'check-sso' }).then((authenticated) => {
+      if (authenticated) {
+        setUser(keycloak.tokenParsed);
+        localStorage.setItem('user', JSON.stringify(keycloak.tokenParsed));
+      } else {
+        setUser(null);
+        localStorage.removeItem('user');
+      }
+    });
+  }, []);
+
+  const login = () => {
+    keycloak.login();
   };
 
   const logout = () => {
+    keycloak.logout();
     setUser(null);
+    localStorage.removeItem('user');
   };
 
   return (
