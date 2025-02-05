@@ -7,8 +7,12 @@ const keycloak = new Keycloak({
 });
 
 export async function initAuth() {
+  console.log(location.origin);
   try {
-    const authenticated = await keycloak.init({ onLoad: 'check-sso' });
+    const authenticated = await keycloak.init({
+      onLoad: 'check-sso',
+      silentCheckSsoRedirectUri: `${location.origin}/silent-check-sso.html`,
+    });
     console.log({ authenticated });
     if (authenticated) {
       // localStorage.setItem('user', JSON.stringify(keycloak.tokenParsed));
