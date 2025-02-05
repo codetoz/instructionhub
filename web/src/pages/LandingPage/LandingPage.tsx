@@ -109,12 +109,12 @@ function LandingPage() {
           alt="Sample Banner"
           sx={{ width: '100%', maxWidth: 600, mb: 4 }}
         /> */}
-        <Typography variant="body1" sx={{ mb: 2 }}>
-          Instruction Hub is an <strong>Open Source Project</strong>
+        <Typography variant="h6" sx={{ mb: 2 }}>
+          Instruction Hub is an <strong>Open Source</strong> Project
         </Typography>
         <Button
           variant="contained"
-          href="https://github.com"
+          href={import.meta.env.VITE_GITHUB_PROJECT_URL}
           target="_blank"
           rel="noopener"
         >
