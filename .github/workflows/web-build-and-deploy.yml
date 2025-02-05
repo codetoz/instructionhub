@@ -32,15 +32,15 @@ jobs:
           node-version: "20"
 
       - name: Install dependencies
-        run: yarn
+        run: yarn --cwd web
 
       - name: Build the project
-        run: yarn build
+        run: yarn build --cwd web build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: web/dist
 
   deploy:
     environment:
