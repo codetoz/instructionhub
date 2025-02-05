@@ -3,11 +3,13 @@ name: Build Backend and Push Docker Image
 on:
   push:
     branches:
-      - main # change if you want to trigger on different branches
+      - main
     paths:
       - "backend/**"
 
-# Required so we can push to GHCR
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
 permissions:
   contents: read
   packages: write
