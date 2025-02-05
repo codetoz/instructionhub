@@ -1,9 +1,9 @@
 import { AppBar, Toolbar, Typography, Box } from '@mui/material';
 import Button from './Button';
-import { useAuth } from '../../context/AuthContext';
+import { useAuthStore } from '../../store/authStore';
 
 function Header() {
-  const { user, login, logout } = useAuth();
+  const { user, login, logout } = useAuthStore();
 
   const handleLogin = () => {
     login();

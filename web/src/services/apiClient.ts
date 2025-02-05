@@ -1,5 +1,5 @@
 import axios from 'axios';
-import keycloak from '../keycloak';
+import { getAuthToken } from './auth';
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000',
@@ -7,7 +7,8 @@ const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((config) => {
-  config.headers.Authorization = `Bearer ${keycloak.token}`;
+  const token = getAuthToken();
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
