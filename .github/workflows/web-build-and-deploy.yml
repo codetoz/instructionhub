@@ -35,7 +35,7 @@ jobs:
         run: yarn --cwd web
 
       - name: Build the project
-        run: yarn build --cwd web build
+        run: yarn --cwd web build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
