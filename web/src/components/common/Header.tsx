@@ -1,6 +1,6 @@
 import { AppBar, Toolbar, Typography, Box } from '@mui/material';
 import Button from './Button';
-import { useAuthStore } from '../../store/authStore';
+import { useAuthStore } from '../../services/auth/store';
 
 function Header() {
   const { user, login, logout } = useAuthStore();
