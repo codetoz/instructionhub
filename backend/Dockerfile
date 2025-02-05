@@ -28,4 +28,4 @@ COPY --chown=node:node --from=build /app/dist /app/dist
 
 ARG START_APP_PATH=./dist/main.js
 
-CMD ["dumb-init", "node", ${ARGS} "${START_APP_PATH}"]
+CMD dumb-init node ${ARGS} "${START_APP_PATH}"
