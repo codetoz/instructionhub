@@ -1,5 +1,5 @@
 export class RequestUser {
-  userId: string
+  id: string
   username: string
   email: string
   fullname: string
