@@ -143,6 +143,8 @@ function LandingPage() {
               groupName="group name"
               updatedAt={new Date('January 14, 2024')}
               version="0.4.1"
+              starsCount={Math.floor(Math.random() * 10)}
+              clientUserGaveStar={Math.random() > 0.5 ? true : false}
             />
           ))}
         </Box>
