@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Avatar, Box, Button, Typography } from '@mui/material';
 import { StarRateRounded, StarBorderRounded } from '@mui/icons-material';
 import { diffMonths } from '../../helpers/date';
 
@@ -11,6 +11,7 @@ interface InstructionCardProps {
   version: string;
   starsCount: number;
   clientUserGaveStar: boolean;
+  userImageSrc: string;
 }
 
 function InstructionCard({
@@ -22,6 +23,7 @@ function InstructionCard({
   version,
   starsCount,
   clientUserGaveStar,
+  userImageSrc,
 }: InstructionCardProps) {
   const updatedAtNMonthsAgo = diffMonths(updatedAt, new Date());
   return (
@@ -32,6 +34,7 @@ function InstructionCard({
         backgroundColor: '#222',
       }}
     >
+      <Avatar src={userImageSrc} />
       <Typography variant="h6">{name}</Typography>
       <Button
         size="small"
