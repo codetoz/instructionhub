@@ -4,7 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material';
 import AppRoutes from './routes/AppRoutes';
 
-import Header from './components/common/Header';
+import TheHeader from './components/layout/TheHeader';
 import { useAuthStore } from './services/auth/store';
 
 const theme = createTheme();
@@ -17,7 +17,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
-        <Header />
+        <TheHeader />
         <AppRoutes />
       </BrowserRouter>
     </ThemeProvider>

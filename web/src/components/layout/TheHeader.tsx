@@ -1,8 +1,8 @@
 import { AppBar, Toolbar, Typography, Box } from '@mui/material';
-import Button from './Button';
+import Button from '../common/Button';
 import { useAuthStore } from '../../services/auth/store';
 
-function Header() {
+function TheHeader() {
   const { user, login, logout } = useAuthStore();
 
   const handleLogin = () => {
@@ -42,4 +42,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default TheHeader;

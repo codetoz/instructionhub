@@ -7,6 +7,7 @@ import {
   Chip,
   styled,
 } from '@mui/material';
+import InstructionCard from '../../components/instruction/InstructionCard';
 
 function LandingPage() {
   return (
@@ -134,23 +135,15 @@ function LandingPage() {
           }}
         >
           {[...Array(6)].map((_, idx) => (
-            <Box
+            <InstructionCard
               key={idx}
-              sx={{
-                border: '1px solid #333',
-                p: 2,
-                backgroundColor: '#222',
-              }}
-            >
-              <Typography variant="h6">Instruction name</Typography>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                @ user name @group name
-              </Typography>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                Updated 2 months ago
-              </Typography>
-              <Typography variant="caption">Version 0.4.1</Typography>
-            </Box>
+              name="Instruction name"
+              description="Tempor deserunt commodo tempor eiusmod non nisi magna enim mollit eiusmod aute est elit aute."
+              userName="user name"
+              groupName="group name"
+              updatedAt={new Date('January 14, 2024')}
+              version="0.4.1"
+            />
           ))}
         </Box>
       </Container>
