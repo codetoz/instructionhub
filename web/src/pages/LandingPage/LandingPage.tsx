@@ -145,6 +145,7 @@ function LandingPage() {
               version="0.4.1"
               starsCount={Math.floor(Math.random() * 10)}
               clientUserGaveStar={Math.random() > 0.5 ? true : false}
+              userImageSrc='fads;flkj'
             />
           ))}
         </Box>
