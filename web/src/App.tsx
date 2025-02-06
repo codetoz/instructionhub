@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import AppRoutes from './routes/AppRoutes';
 
 import Header from './components/common/Header';
-import { useAuthStore } from './store/authStore';
+import { useAuthStore } from './services/auth/store';
 
 const theme = createTheme();
 
