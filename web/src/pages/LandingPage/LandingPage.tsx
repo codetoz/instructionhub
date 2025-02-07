@@ -19,7 +19,6 @@ function LandingPage() {
         backgroundColor: 'background.default',
         minHeight: '100vh',
         pt: 8,
-        pb: 8,
       }}
     >
       <TheConstrain maxWidth="md" sx={{ textAlign: 'center' }}>
