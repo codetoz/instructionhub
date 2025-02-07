@@ -15,9 +15,9 @@ function TheHeader() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#121212' }}>
+    <AppBar position="static" sx={{ backgroundColor: 'background.default' }}>
       <TheConstrain>
-        <Toolbar>
+        <Toolbar sx={{ px: '0 !important' }}>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             InstructionHUB
           </Typography>
