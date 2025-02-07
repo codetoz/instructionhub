@@ -6,22 +6,24 @@ import {
   Button,
   Chip,
   styled,
+  useTheme,
 } from '@mui/material';
+import InstructionCard from '../../components/instruction/InstructionCard';
+import TheConstrain from '../../components/layout/TheConstrain';
 
 function LandingPage() {
+  const theme = useTheme();
   return (
     <Box
       sx={{
-        backgroundColor: '#121212',
-        color: '#fff',
+        backgroundColor: 'background.default',
         minHeight: '100vh',
         pt: 8,
-        pb: 8,
       }}
     >
-      <Container maxWidth="md" sx={{ textAlign: 'center' }}>
+      <TheConstrain maxWidth="md" sx={{ textAlign: 'center' }}>
         <Typography variant="h3" sx={{ mb: 4 }}>
-          Find, <strong>use</strong> and share your custom instructions
+          Find, <strong>use</strong> and share instructions
         </Typography>
         <Box
           component="form"
@@ -113,47 +115,56 @@ function LandingPage() {
           Instruction Hub is an <strong>Open Source</strong> Project
         </Typography>
         <Button
-          variant="contained"
+          variant="outlined"
           href={import.meta.env.VITE_GITHUB_PROJECT_URL}
           target="_blank"
           rel="noopener"
+          color="inherit"
         >
           GitHub
         </Button>
-      </Container>
+      </TheConstrain>
 
-      <Container maxWidth="lg" sx={{ mt: 8 }}>
-        <Typography variant="h5" sx={{ mb: 4 }}>
-          Explore and discover instructions
-        </Typography>
-        <Box
+      <Box
+        sx={{
+          backgroundColor: theme.palette.background.paper,
+        }}
+      >
+        <TheConstrain
           sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-            gap: 2,
+            mt: 8,
+            py: '30px',
           }}
         >
-          {[...Array(6)].map((_, idx) => (
-            <Box
-              key={idx}
-              sx={{
-                border: '1px solid #333',
-                p: 2,
-                backgroundColor: '#222',
-              }}
-            >
-              <Typography variant="h6">Instruction name</Typography>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                @ user name @group name
-              </Typography>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                Updated 2 months ago
-              </Typography>
-              <Typography variant="caption">Version 0.4.1</Typography>
-            </Box>
-          ))}
-        </Box>
-      </Container>
+          <Typography variant="h5" sx={{ mb: 4 }} textAlign="center">
+            Explore and discover instructions
+          </Typography>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+              gap: 2,
+            }}
+          >
+            {[...Array(6)].map((_, idx) => (
+              <InstructionCard
+                key={idx}
+                instructionName="Instruction name"
+                instructionId={String(idx)}
+                description="Tempor deserunt commodo tempor eiusmod non nisi magna enim mollit eiusmod aute est elit aute."
+                userName="user name"
+                groupName="group name"
+                groupId=";fasdklfj"
+                updatedAt={new Date('December 14, 2024')}
+                version="0.4.1"
+                // starsCount={Math.floor(Math.random() * 10)}
+                // clientUserGaveStar={Math.random() > 0.5 ? true : false}
+                userAvatarUrl="fads;flkj"
+              />
+            ))}
+          </Box>
+        </TheConstrain>
+      </Box>
     </Box>
   );
 }

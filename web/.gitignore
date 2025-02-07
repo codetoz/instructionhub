@@ -1,3 +1,5 @@
 node_modules
 *.env
 !env.default
+dist
+.DS_Store

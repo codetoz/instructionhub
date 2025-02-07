@@ -4,10 +4,24 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material';
 import AppRoutes from './routes/AppRoutes';
 
-import Header from './components/common/Header';
+import TheHeader from './components/layout/TheHeader';
 import { useAuthStore } from './services/auth/store';
 
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    text: {
+      primary: '#f3f2f2',
+      secondary: '#d2d0d0',
+    },
+    background: {
+      default: '#141217',
+      paper: '#222529',
+    },
+  },
+  shape: {
+    borderRadius: 0,
+  },
+});
 
 function App() {
   useEffect(() => {
@@ -17,7 +31,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
-        <Header />
+        <TheHeader />
         <AppRoutes />
       </BrowserRouter>
     </ThemeProvider>
