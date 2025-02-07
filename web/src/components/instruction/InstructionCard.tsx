@@ -1,68 +1,129 @@
-import { Avatar, Box, Button, Typography } from '@mui/material';
-import { StarRateRounded, StarBorderRounded } from '@mui/icons-material';
-import { diffMonths } from '../../helpers/date';
+import React from 'react';
+import { Inventory2Rounded } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import {
+  Card,
+  CardContent,
+  Box,
+  Typography,
+  Avatar,
+  styled,
+} from '@mui/material';
+import { calculateTimePassed, TimePassed } from '../../helpers/date';
 
 interface InstructionCardProps {
-  name: string;
-  groupName: string;
+  instructionId: string;
+  instructionName: string;
   userName: string;
-  description: string;
-  updatedAt: Date;
+  userAvatarUrl: string;
+  groupName: string;
   version: string;
-  starsCount: number;
-  clientUserGaveStar: boolean;
-  userImageSrc: string;
+  updatedAt: Date;
+  description: string;
+  groupId: string;
 }
 
-function InstructionCard({
-  name,
-  groupName,
-  userName,
-  description,
-  updatedAt,
-  version,
-  starsCount,
-  clientUserGaveStar,
-  userImageSrc,
-}: InstructionCardProps) {
-  const updatedAtNMonthsAgo = diffMonths(updatedAt, new Date());
+export function InstructionCard(props: InstructionCardProps) {
+  const navigate = useNavigate();
+
+  const timePassed = calculateTimePassed(props.updatedAt);
+  const formattedTimePassed = formatTimePassed(timePassed);
+
+  const handleCardClick = () => {
+    navigate(`/instruction/${props.instructionId}`);
+  };
+
+  const handleUserClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    navigate(`/profile/${props.userName}`);
+  };
+
+  const handleGroupClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    navigate(`/group/${props.groupId}`);
+  };
+
   return (
-    <Box
+    <Card
+      onClick={handleCardClick}
       sx={{
-        border: '1px solid #333',
-        p: 2,
-        backgroundColor: '#222',
+        cursor: 'pointer',
+        background: 'transparent',
+        boxShadow: 'none',
+        '&:hover': {
+          boxShadow: 'rgba(255,255,255, 0.25) 0px 2px 8px 0px',
+        },
+        border: '1px solid #676869',
       }}
     >
-      <Avatar src={userImageSrc} />
-      <Typography variant="h6">{name}</Typography>
-      <Button
-        size="small"
-        variant={'outlined'}
-        startIcon={
-          clientUserGaveStar ? (
-            <StarRateRounded sx={{ width: '14px', height: '16px' }} />
-          ) : (
-            <StarBorderRounded sx={{ width: '14px', height: '16px' }} />
-          )
-        }
-      >
-        <Typography variant="caption" lineHeight="10px">
-          {starsCount}
+      <CardContent>
+        <Typography variant="h6">{props.instructionName}</Typography>
+        <Typography variant="caption" color="textSecondary">
+          Updated {formattedTimePassed} · Version {props.version}
         </Typography>
-      </Button>
-      <Typography variant="body2" sx={{ mb: 1 }}>
-        @{userName} @{groupName}
-      </Typography>
-      <Typography variant="body2" sx={{ mb: 1 }}>
-        {description}
-      </Typography>
-      <Typography variant="body2" sx={{ mb: 1 }}>
-        Updated {updatedAtNMonthsAgo} months ago
-      </Typography>
-      <Typography variant="caption">Version {version}</Typography>
-    </Box>
+        <Typography variant="body2" mt={1}>
+          {props.description}
+        </Typography>
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          mt={2}
+          gap="10px"
+        >
+          <TextButton onClick={handleUserClick}>
+            <Avatar
+              src={props.userAvatarUrl}
+              alt={props.userName}
+              sx={{ width: 32, height: 32 }}
+            />
+            <Typography className="text" variant="body2" color="text.primary">
+              {props.userName}
+            </Typography>
+          </TextButton>
+          <TextButton onClick={handleGroupClick}>
+            <Inventory2Rounded
+              sx={{ width: '18px', height: '18px', color: 'text.secondary' }}
+            />
+            <Typography className="text" variant="body2" color="text.primary">
+              {props.groupName}
+            </Typography>
+          </TextButton>
+        </Box>
+      </CardContent>
+    </Card>
   );
 }
 
 export default InstructionCard;
+
+const TextButton = styled('div')`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  &:hover {
+    .text {
+      text-decoration: underline;
+    }
+  }
+`;
+
+function formatTimePassed(timePassed: TimePassed) {
+  switch (true) {
+    case timePassed.years > 0:
+      return `${timePassed.years} years ago`;
+    case timePassed.months > 0:
+      return `${timePassed.months} months ago`;
+    case timePassed.weeks > 0:
+      return `${timePassed.weeks} weeks ago`;
+    case timePassed.days > 0:
+      return `${timePassed.days} days ago`;
+    case timePassed.hours > 0:
+      return `${timePassed.hours} hours ago`;
+    case timePassed.minutes > 0:
+      return `${timePassed.minutes} minutes ago`;
+    default:
+      return 'just now';
+  }
+}
