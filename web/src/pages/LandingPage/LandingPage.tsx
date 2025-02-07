@@ -1,6 +1,5 @@
 import {
   Box,
-  Container,
   Typography,
   TextField,
   Button,
@@ -8,6 +7,7 @@ import {
   styled,
   useTheme,
 } from '@mui/material';
+import { GitHub } from '@mui/icons-material';
 import InstructionCard from '../../components/instruction/InstructionCard';
 import TheConstrain from '../../components/layout/TheConstrain';
 
@@ -120,6 +120,7 @@ function LandingPage() {
           target="_blank"
           rel="noopener"
           color="inherit"
+          startIcon={<GitHub />}
         >
           GitHub
         </Button>
