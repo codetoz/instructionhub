@@ -4,7 +4,8 @@ import { useAuthStore } from '../../services/auth/store';
 import TheConstrain from './TheConstrain';
 
 function TheHeader() {
-  const { user, login, logout } = useAuthStore();
+  const { user, login, logout, isAuthenticating, isSigningOut } =
+    useAuthStore();
 
   const handleLogin = () => {
     login();
@@ -23,12 +24,22 @@ function TheHeader() {
           </Typography>
           <Box>
             {!user && (
-              <Button
-                label="Sign In"
-                color="inherit"
-                onClick={handleLogin}
-                sx={{ color: '#fff' }}
-              />
+              <>
+                <Button
+                  label="Sign In"
+                  color="inherit"
+                  onClick={handleLogin}
+                  sx={{ color: '#fff', mr: 1 }}
+                  disabled={isAuthenticating}
+                />
+                <Button
+                  label="Sign Up"
+                  color="inherit"
+                  onClick={handleLogin}
+                  sx={{ color: '#fff' }}
+                  disabled={isAuthenticating}
+                />
+              </>
             )}
             {user && (
               <Button
@@ -36,6 +47,7 @@ function TheHeader() {
                 color="inherit"
                 onClick={handleLogout}
                 sx={{ color: '#fff' }}
+                disabled={isSigningOut}
               />
             )}
           </Box>

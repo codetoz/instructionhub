@@ -133,7 +133,6 @@ function LandingPage() {
         <TheConstrain
           sx={{
             mt: 8,
-            px: '15px',
             py: '30px',
           }}
         >
