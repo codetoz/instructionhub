@@ -18,5 +18,5 @@ export class CreateInstructionDto {
 
   @IsString()
   @IsOptional()
-  group?: string
+  groupId?: string
 }
