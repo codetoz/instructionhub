@@ -22,6 +22,9 @@ export class Instruction {
   @Column({ name: 'created_by' })
   createdBy: string // user_id: uuid
 
+  @Column({ name: 'title' })
+  title: string
+
   @Column()
   description: string
 
