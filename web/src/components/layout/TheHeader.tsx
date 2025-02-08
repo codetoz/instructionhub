@@ -1,18 +1,53 @@
-import { AppBar, Toolbar, Typography, Box } from '@mui/material';
-import Button from '../common/Button';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Box,
+  Avatar,
+  IconButton,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material';
 import { useAuthStore } from '../../services/auth/store';
 import TheConstrain from './TheConstrain';
+import Button from '../common/Button';
+import { MouseEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 function TheHeader() {
+  const navigate = useNavigate();
   const { user, login, logout, isAuthenticating, isSigningOut } =
     useAuthStore();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleLogin = () => {
     login();
   };
 
+  const handleMenuOpen = (event: MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   const handleLogout = () => {
+    handleMenuClose();
     logout();
+  };
+
+  const handleOpenProfile = () => {
+    handleMenuClose();
+    if (user && user.username) {
+      navigate(`/profile/${user.username}`);
+    } else {
+      navigate('/');
+    }
   };
 
   return (
@@ -42,13 +77,47 @@ function TheHeader() {
               </>
             )}
             {user && (
-              <Button
-                label="Sign Out"
-                color="inherit"
-                onClick={handleLogout}
-                sx={{ color: '#fff' }}
-                disabled={isSigningOut}
-              />
+              <Box>
+                <IconButton
+                  onClick={handleMenuOpen}
+                  color="inherit"
+                  sx={{ color: '#fff' }}
+                >
+                  <Avatar sx={{ width: 24, height: 24 }} />
+                </IconButton>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleMenuClose}
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                  transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                >
+                  <MenuItem onClick={handleOpenProfile}>
+                    <ListItemIcon>
+                      <PersonOutlineIcon
+                        sx={{ color: 'text.secondary' }}
+                        fontSize="small"
+                      />
+                    </ListItemIcon>
+                    <ListItemText primary="Open Profile" />
+                  </MenuItem>
+                  <MenuItem onClick={handleLogout} disabled={isSigningOut}>
+                    <ListItemIcon>
+                      <LogoutIcon
+                        sx={{ color: 'text.secondary' }}
+                        fontSize="small"
+                      />
+                    </ListItemIcon>
+                    <ListItemText primary="Sign Out" />
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => navigate('/manage-instructions')}
+                    disabled={isSigningOut}
+                  >
+                    <ListItemText primary="Manage Instructions" />
+                  </MenuItem>
+                </Menu>
+              </Box>
             )}
           </Box>
         </Toolbar>

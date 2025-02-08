@@ -112,17 +112,17 @@ const TextButton = styled('div')`
 function formatTimePassed(timePassed: TimePassed) {
   switch (true) {
     case timePassed.years > 0:
-      return `${timePassed.years} years ago`;
+      return `${timePassed.years} year${timePassed.years > 1 ? 's' : ''} ago`;
     case timePassed.months > 0:
-      return `${timePassed.months} months ago`;
+      return `${timePassed.months} month${timePassed.months > 1 ? 's' : ''} ago`;
     case timePassed.weeks > 0:
-      return `${timePassed.weeks} weeks ago`;
+      return `${timePassed.weeks} week${timePassed.weeks > 1 ? 's' : ''} ago`;
     case timePassed.days > 0:
-      return `${timePassed.days} days ago`;
+      return `${timePassed.days} day${timePassed.days > 1 ? 's' : ''} ago`;
     case timePassed.hours > 0:
-      return `${timePassed.hours} hours ago`;
+      return `${timePassed.hours} hour${timePassed.hours > 1 ? 's' : ''} ago`;
     case timePassed.minutes > 0:
-      return `${timePassed.minutes} minutes ago`;
+      return `${timePassed.minutes} minute${timePassed.minutes > 1 ? 's' : ''} ago`;
     default:
       return 'just now';
   }

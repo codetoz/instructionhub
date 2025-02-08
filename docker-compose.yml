@@ -1,0 +1,68 @@
+version: "3.8"
+
+services:
+  # PostgreSQL service
+  postgres:
+    image: postgres:17.2-bookworm
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres_user
+      POSTGRES_PASSWORD: postgres_password
+      POSTGRES_DB: ihub
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - ihub_network
+
+  # Keycloak service
+  keycloak:
+    image: jboss/keycloak:26.1.0
+    container_name: keycloak
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: ihub
+      DB_USER: postgres_user
+      DB_PASSWORD: postgres_password
+    ports:
+      - "8080:8080"
+    networks:
+      - ihub_network
+    depends_on:
+      - postgres
+
+  # The application (backend) service
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres_user
+      DB_PASSWORD: postgres_password
+      DB_NAME: ihub
+      KEYCLOAK_AUTH_SERVER_URL: "http://keycloak:8080/realms/myrealm"
+      KEYCLOAK_REALM: "myrealm"
+      KEYCLOAK_CLIENT_ID: "myclientid"
+      KEYCLOAK_CLIENT_SECRET: "myclientsecret"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - keycloak
+    networks:
+      - ihub_network
+
+networks:
+  ihub_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
