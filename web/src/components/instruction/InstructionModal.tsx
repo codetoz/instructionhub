@@ -7,9 +7,9 @@ import {
   DialogActions,
   TextField,
   Button as MuiButton,
-  Box
+  Box,
 } from '@mui/material';
-import apiClient from '../../services/apiClient';
+import apiClient from '../../logic/apiClient';
 
 interface InstructionModalProps {
   open: boolean;
@@ -23,7 +23,11 @@ interface InstructionFormInputs {
   body: string;
 }
 
-export default function InstructionModal({ open, onClose, instructionId }: InstructionModalProps) {
+export default function InstructionModal({
+  open,
+  onClose,
+  instructionId,
+}: InstructionModalProps) {
   const {
     register,
     handleSubmit,
@@ -33,19 +37,20 @@ export default function InstructionModal({ open, onClose, instructionId }: Instr
     defaultValues: {
       title: '',
       description: '',
-      body: ''
-    }
+      body: '',
+    },
   });
 
   // Fetch existing instruction data if in edit mode
   useEffect(() => {
     if (instructionId) {
-      apiClient.get(`/instructions/${instructionId}`)
+      apiClient
+        .get(`/instructions/${instructionId}`)
         .then((response) => {
           reset({
             title: response.data.title || '',
             description: response.data.description || '',
-            body: response.data.body || ''
+            body: response.data.body || '',
           });
         })
         .catch(() => {
@@ -64,7 +69,7 @@ export default function InstructionModal({ open, onClose, instructionId }: Instr
         await apiClient.put(`/instructions/${instructionId}`, {
           title: data.title,
           description: data.description,
-          body: data.body
+          body: data.body,
         });
       } else {
         // Add mode
@@ -72,7 +77,7 @@ export default function InstructionModal({ open, onClose, instructionId }: Instr
           title: data.title,
           description: data.description,
           body: data.body,
-          group_id: 'default'
+          group_id: 'default',
         });
       }
       onClose();
@@ -83,12 +88,13 @@ export default function InstructionModal({ open, onClose, instructionId }: Instr
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>{instructionId ? 'Edit Instruction' : 'Add Instruction'}</DialogTitle>
-      <Box
-        component="form"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <DialogTitle>
+        {instructionId ? 'Edit Instruction' : 'Add Instruction'}
+      </DialogTitle>
+      <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+        <DialogContent
+          sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+        >
           <TextField
             label="Title"
             variant="outlined"
@@ -118,7 +124,9 @@ export default function InstructionModal({ open, onClose, instructionId }: Instr
         </DialogContent>
         <DialogActions>
           <MuiButton onClick={onClose}>Cancel</MuiButton>
-          <MuiButton type="submit" variant="contained">Save</MuiButton>
+          <MuiButton type="submit" variant="contained">
+            Save
+          </MuiButton>
         </DialogActions>
       </Box>
     </Dialog>

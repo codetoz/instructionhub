@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form';
 import {
   createInstruction,
   updateInstruction,
-} from '../../services/instructionService';
+} from '../../logic/instruction/service';
 import { useEffect, useState } from 'react';
 
 interface InstructionModalProps {
@@ -55,20 +55,18 @@ export default function InstructionModal({
     try {
       setLoading(true);
       if (!isEditMode) {
-        await createInstruction(
-          data.title,
-          data.description,
-          data.content,
-          'default',
-        );
+        await createInstruction({
+          title: data.title,
+          description: data.description,
+          content: data.content,
+        });
       } else {
         if (instructionId) {
-          await updateInstruction(
-            instructionId,
-            data.title,
-            data.description,
-            data.content,
-          );
+          await updateInstruction(instructionId, {
+            title: data.title,
+            description: data.description,
+            content: data.content,
+          });
         }
       }
       onClose();
