@@ -1,4 +1,15 @@
-import { AppBar, Toolbar, Typography, Box, Avatar, IconButton, Menu, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Box,
+  Avatar,
+  IconButton,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material';
 import { useAuthStore } from '../../services/auth/store';
 import TheConstrain from './TheConstrain';
 import Button from '../common/Button';
@@ -9,7 +20,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 function TheHeader() {
   const navigate = useNavigate();
-  const { user, login, logout, isAuthenticating, isSigningOut } = useAuthStore();
+  const { user, login, logout, isAuthenticating, isSigningOut } =
+    useAuthStore();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleLogin = () => {
@@ -66,7 +78,11 @@ function TheHeader() {
             )}
             {user && (
               <Box>
-                <IconButton onClick={handleMenuOpen} color="inherit" sx={{ color: '#fff' }}>
+                <IconButton
+                  onClick={handleMenuOpen}
+                  color="inherit"
+                  sx={{ color: '#fff' }}
+                >
                   <Avatar sx={{ width: 24, height: 24 }} />
                 </IconButton>
                 <Menu
@@ -78,15 +94,27 @@ function TheHeader() {
                 >
                   <MenuItem onClick={handleOpenProfile}>
                     <ListItemIcon>
-                      <PersonOutlineIcon fontSize="small" />
+                      <PersonOutlineIcon
+                        sx={{ color: 'text.secondary' }}
+                        fontSize="small"
+                      />
                     </ListItemIcon>
                     <ListItemText primary="Open Profile" />
                   </MenuItem>
                   <MenuItem onClick={handleLogout} disabled={isSigningOut}>
                     <ListItemIcon>
-                      <LogoutIcon fontSize="small" />
+                      <LogoutIcon
+                        sx={{ color: 'text.secondary' }}
+                        fontSize="small"
+                      />
                     </ListItemIcon>
                     <ListItemText primary="Sign Out" />
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => navigate('/manage-instructions')}
+                    disabled={isSigningOut}
+                  >
+                    <ListItemText primary="Manage Instructions" />
                   </MenuItem>
                 </Menu>
               </Box>
