@@ -17,6 +17,8 @@ export class KeycloakConfig implements Keycloak.KeycloakConfig {
   'ssl-required': string
   'bearer-only'?: boolean | undefined
 
+  publicKey: string
+
   constructor() {
     this.realm = process.env.KEYCLOAK_REALM || '' // Your Keycloak realm
     this.clientId = process.env.KEYCLOAK_CLIENT_ID || '' // Your Keycloak client ID
@@ -32,7 +34,9 @@ export class KeycloakConfig implements Keycloak.KeycloakConfig {
     this.confidentialPort = this['confidential-port'] = parseInt(
       process.env.KEYCLOAK_CONFIDENTIAL_PORT || '0',
       10,
-    ) // Port for the Keycloak client
+    )
+
+    this.publicKey = process.env.KEYCLOAK_CLIENT_PUBLIC_KEY || ''
   }
 
   static get() {
