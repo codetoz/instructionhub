@@ -32,10 +32,6 @@ const router = createBrowserRouter([
         index: true,
         Component: LandingPage,
       },
-      {
-        path: '/g/:group-slug/:instruction-slug',
-        Component: InstructionDetailsPage,
-      },
       { path: '/instructions/search', Component: SearchPage },
       {
         path: '/:username/:instruction-slug',
