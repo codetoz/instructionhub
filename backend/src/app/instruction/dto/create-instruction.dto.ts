@@ -1,10 +1,10 @@
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator'
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator'
 import { InstructionType } from '../enum/instruction-type.enum'
 
 export class CreateInstructionDto {
   @IsString()
   @IsNotEmpty()
-  slug: string // Instruction slug, must be unique within the same group
+  slug: string
 
   @IsString()
   @IsNotEmpty()
@@ -15,4 +15,8 @@ export class CreateInstructionDto {
 
   @IsEnum(InstructionType)
   type: InstructionType
+
+  @IsString()
+  @IsOptional()
+  group?: string
 }

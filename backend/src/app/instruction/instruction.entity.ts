@@ -3,7 +3,6 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
   Unique,
@@ -12,7 +11,7 @@ import { Group } from '../group/group.entity'
 import { InstructionType } from './enum/instruction-type.enum'
 
 @Entity('instructions')
-@Unique(['slug', 'group']) // Slug must be unique for each group
+@Unique(['slug', 'createdBy']) // Slug must be unique for each group
 export class Instruction {
   @PrimaryGeneratedColumn('uuid')
   id: string
@@ -20,21 +19,25 @@ export class Instruction {
   @Column()
   slug: string
 
-  @Column()
-  content: string
+  @Column({ name: 'created_by' })
+  createdBy: string // user_id: uuid
 
   @Column()
   description: string
 
-  @Column({ type: 'enum', enum: InstructionType })
+  @Column()
+  content: string
+
+  @Column({
+    type: 'enum',
+    enum: InstructionType,
+    default: InstructionType.PRIVATE,
+  })
   type: InstructionType
 
-  @Column({ name: 'created_by' })
-  createdBy: string
-
-  @ManyToOne(() => Group, { eager: true })
-  @JoinColumn({ name: 'group_id' })
-  group: Group
+  @ManyToOne(() => Group, { eager: false })
+  @Column({ name: 'group_id', nullable: true })
+  groupId?: string
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date
