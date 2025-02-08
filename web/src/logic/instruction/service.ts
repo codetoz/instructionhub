@@ -1,4 +1,5 @@
-import apiClient from './apiClient';
+import apiClient from '../apiClient';
+import { Instruction } from './types';
 
 export async function getInstructions() {
   const response = await apiClient.get('/instructions');
@@ -10,12 +11,12 @@ export async function getInstructionById(id: string) {
   return response.data;
 }
 
-export async function createInstruction(
-  title: string,
-  description: string,
-  content: string,
-  groupId: string,
-) {
+export async function createInstruction({
+  groupId,
+  description,
+  title,
+  content,
+}: Instruction) {
   const response = await apiClient.post(`/instructions/${groupId}`, {
     title,
     description,
@@ -27,9 +28,7 @@ export async function createInstruction(
 
 export async function updateInstruction(
   id: string,
-  title: string,
-  description: string,
-  content: string,
+  { title, description, content }: Partial<Instruction>,
 ) {
   const response = await apiClient.put(`/instructions/${id}`, {
     title,

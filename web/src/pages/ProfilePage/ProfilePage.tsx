@@ -3,7 +3,7 @@ import { Box, Tabs, Tab, Typography, Button } from '@mui/material';
 import TheConstrain from '../../components/layout/TheConstrain';
 import InstructionModal from './InstructionModal';
 
-function ManageInstructionsPage() {
+function ProfilePage() {
   const [tabValue, setTabValue] = useState(0);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -18,9 +18,9 @@ function ManageInstructionsPage() {
         open={instructionModalOpen}
         onClose={() => setInstructionModalOpen(false)}
       />
-      <TheConstrain sx={{ padding: '16px' }}>
+      <TheConstrain>
         <Typography variant="h5" sx={{ mb: 2 }}>
-          Manage Instructions
+          Profile
         </Typography>
         <Tabs value={tabValue} onChange={handleTabChange}>
           <Tab label="Instructions" />
@@ -82,4 +82,4 @@ function ManageInstructionsPage() {
   );
 }
 
-export default ManageInstructionsPage;
+export default ProfilePage;

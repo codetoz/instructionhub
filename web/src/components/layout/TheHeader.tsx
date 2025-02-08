@@ -10,23 +10,18 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import { useAuthStore } from '../../services/auth/store';
+import { MouseEvent, useState } from 'react';
+import { PersonOutline, Logout } from '@mui/icons-material';
+import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import TheConstrain from './TheConstrain';
 import Button from '../common/Button';
-import { MouseEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import LogoutIcon from '@mui/icons-material/Logout';
+import { User } from '../../logic/auth/types';
+import { login, logout } from '../../logic/auth/service';
 
 function TheHeader() {
   const navigate = useNavigate();
-  const { user, login, logout, isAuthenticating, isSigningOut } =
-    useAuthStore();
+  const { user } = useRouteLoaderData('root') as { user?: User };
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const handleLogin = () => {
-    login();
-  };
 
   const handleMenuOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -42,16 +37,20 @@ function TheHeader() {
   };
 
   const handleOpenProfile = () => {
+    if (!user) return;
     handleMenuClose();
     if (user && user.username) {
-      navigate(`/profile/${user.username}`);
+      navigate(`/${user.username}`);
     } else {
       navigate('/');
     }
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: 'background.default' }}>
+    <AppBar
+      position="static"
+      sx={{ backgroundColor: 'background.default', mb: 4 }}
+    >
       <TheConstrain>
         <Toolbar sx={{ px: '0 !important' }}>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
@@ -63,16 +62,14 @@ function TheHeader() {
                 <Button
                   label="Sign In"
                   color="inherit"
-                  onClick={handleLogin}
+                  onClick={login}
                   sx={{ color: '#fff', mr: 1 }}
-                  disabled={isAuthenticating}
                 />
                 <Button
                   label="Sign Up"
                   color="inherit"
-                  onClick={handleLogin}
+                  onClick={login}
                   sx={{ color: '#fff' }}
-                  disabled={isAuthenticating}
                 />
               </>
             )}
@@ -94,27 +91,21 @@ function TheHeader() {
                 >
                   <MenuItem onClick={handleOpenProfile}>
                     <ListItemIcon>
-                      <PersonOutlineIcon
+                      <PersonOutline
                         sx={{ color: 'text.secondary' }}
                         fontSize="small"
                       />
                     </ListItemIcon>
                     <ListItemText primary="Open Profile" />
                   </MenuItem>
-                  <MenuItem onClick={handleLogout} disabled={isSigningOut}>
+                  <MenuItem onClick={handleLogout}>
                     <ListItemIcon>
-                      <LogoutIcon
+                      <Logout
                         sx={{ color: 'text.secondary' }}
                         fontSize="small"
                       />
                     </ListItemIcon>
                     <ListItemText primary="Sign Out" />
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => navigate('/manage-instructions')}
-                    disabled={isSigningOut}
-                  >
-                    <ListItemText primary="Manage Instructions" />
                   </MenuItem>
                 </Menu>
               </Box>

@@ -8,3 +8,14 @@ export interface KeycloakJwtPayload {
   family_name: string; // lastName
   email: string;
 }
+
+export interface User {
+  id: string;
+  scope: string;
+  emailVerified: boolean;
+  fullName: string;
+  username: string;
+  name: string;
+  lastName: string;
+  email: string;
+}
