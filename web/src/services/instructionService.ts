@@ -13,14 +13,14 @@ export async function getInstructionById(id: string) {
 export async function createInstruction(
   title: string,
   description: string,
-  body: string,
+  content: string,
   groupId: string,
 ) {
   const response = await apiClient.post(`/instructions/${groupId}`, {
     title,
     description,
     groupId,
-    body,
+    content,
   });
   return response.data;
 }
@@ -29,12 +29,12 @@ export async function updateInstruction(
   id: string,
   title: string,
   description: string,
-  body: string,
+  content: string,
 ) {
   const response = await apiClient.put(`/instructions/${id}`, {
     title,
     description,
-    body,
+    content,
   });
   return response.data;
 }

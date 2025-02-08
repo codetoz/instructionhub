@@ -22,7 +22,7 @@ interface InstructionModalProps {
 interface FormValues {
   title: string;
   description: string;
-  body: string;
+  content: string;
 }
 
 export default function InstructionModal({
@@ -58,7 +58,7 @@ export default function InstructionModal({
         await createInstruction(
           data.title,
           data.description,
-          data.body,
+          data.content,
           'default',
         );
       } else {
@@ -67,7 +67,7 @@ export default function InstructionModal({
             instructionId,
             data.title,
             data.description,
-            data.body,
+            data.content,
           );
         }
       }
@@ -111,15 +111,15 @@ export default function InstructionModal({
           />
           <TextField
             margin="dense"
-            label="Body"
+            label="Content"
             type="text"
             fullWidth
             multiline
             rows={4}
             variant="outlined"
-            error={!!errors.body}
-            helperText={errors.body ? 'Description is required' : ''}
-            {...register('body', { required: true })}
+            error={!!errors.content}
+            helperText={errors.content ? 'Description is required' : ''}
+            {...register('content', { required: true })}
           />
         </form>
       </DialogContent>
