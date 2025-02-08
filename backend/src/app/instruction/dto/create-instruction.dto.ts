@@ -8,6 +8,10 @@ export class CreateInstructionDto {
 
   @IsString()
   @IsNotEmpty()
+  title: string
+
+  @IsString()
+  @IsNotEmpty()
   content: string
 
   @IsString()
