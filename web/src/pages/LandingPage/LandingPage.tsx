@@ -80,7 +80,7 @@ function LandingPage() {
           <Chip
             label={
               <QueryChipTypography variant="caption">
-                helm plugin
+                code style
               </QueryChipTypography>
             }
             clickable
@@ -89,7 +89,7 @@ function LandingPage() {
           <Chip
             label={
               <QueryChipTypography variant="caption">
-                helm plugin
+                o1 pro
               </QueryChipTypography>
             }
             clickable
@@ -98,7 +98,7 @@ function LandingPage() {
           <Chip
             label={
               <QueryChipTypography variant="caption">
-                helm chart in the storage category
+                reactjs
               </QueryChipTypography>
             }
             clickable
