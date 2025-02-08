@@ -6,12 +6,13 @@ import {
   TextField,
   Button,
 } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import slugify from 'slugify';
 import {
   createInstruction,
   updateInstruction,
 } from '../../logic/instruction/service';
-import { useEffect, useState } from 'react';
 
 interface InstructionModalProps {
   open: boolean;
@@ -23,6 +24,7 @@ interface FormValues {
   title: string;
   description: string;
   content: string;
+  slug: string;
 }
 
 export default function InstructionModal({
@@ -35,10 +37,23 @@ export default function InstructionModal({
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
+    setValue,
+    clearErrors,
   } = useForm<FormValues>();
   const [loading, setLoading] = useState(false);
 
+  const title = watch('title');
+  const slug = watch('slug') || '';
+
   const isEditMode = !!instructionId;
+
+  useEffect(() => {
+    if (title) {
+      setValue('slug', slugify(title, '-'));
+      clearErrors('slug');
+    }
+  }, [title]);
 
   useEffect(() => {
     if (isEditMode) {
@@ -59,6 +74,7 @@ export default function InstructionModal({
           title: data.title,
           description: data.description,
           content: data.content,
+          slug: data.slug,
         });
       } else {
         if (instructionId) {
@@ -83,17 +99,34 @@ export default function InstructionModal({
         {isEditMode ? 'Edit Instruction' : 'Add Instruction'}
       </DialogTitle>
       <DialogContent>
-        <form id="instruction-form" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          id="instruction-form"
+          onSubmit={handleSubmit(onSubmit)}
+          style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
+        >
           <TextField
             autoFocus
             margin="dense"
-            label="Title"
+            label="Title*"
             type="text"
             fullWidth
             variant="outlined"
             error={!!errors.title}
             helperText={errors.title ? 'Title is required' : ''}
             {...register('title', { required: true })}
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Slug*"
+            type="text"
+            fullWidth
+            // '' is added to make textField controlled
+            value={slug || ''}
+            variant="outlined"
+            error={!!errors.slug}
+            helperText={errors.slug ? 'Slug is required' : ''}
+            {...register('slug', { required: true })}
           />
           <TextField
             margin="dense"
@@ -104,19 +137,18 @@ export default function InstructionModal({
             rows={4}
             variant="outlined"
             error={!!errors.description}
-            helperText={errors.description ? 'Description is required' : ''}
             {...register('description', { required: false })}
           />
           <TextField
             margin="dense"
-            label="Content"
+            label="Content*"
             type="text"
             fullWidth
             multiline
             rows={4}
             variant="outlined"
             error={!!errors.content}
-            helperText={errors.content ? 'Description is required' : ''}
+            helperText={errors.content ? 'Content is required' : ''}
             {...register('content', { required: true })}
           />
         </form>

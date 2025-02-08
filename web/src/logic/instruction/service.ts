@@ -1,5 +1,5 @@
 import apiClient from '../apiClient';
-import { Instruction } from './types';
+import { Instruction, InstructionType } from './types';
 
 export async function getInstructions() {
   const response = await apiClient.get('/instructions');
@@ -16,12 +16,16 @@ export async function createInstruction({
   description,
   title,
   content,
+  type = InstructionType.PUBLIC,
+  slug,
 }: Instruction) {
-  const response = await apiClient.post(`/instructions/${groupId}`, {
+  const response = await apiClient.post(`/instructions`, {
     title,
     description,
     groupId,
     content,
+    type,
+    slug,
   });
   return response.data;
 }

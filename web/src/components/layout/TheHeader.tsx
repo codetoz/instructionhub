@@ -53,7 +53,20 @@ function TheHeader() {
     >
       <TheConstrain>
         <Toolbar sx={{ px: '0 !important' }}>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            sx={{
+              flexGrow: 1,
+              cursor: 'pointer',
+              transition: 'opacity 0.2s ease',
+              '&:hover': {
+                opacity: '0.8',
+              },
+            }}
+            onClick={() => {
+              navigate('/');
+            }}
+          >
             InstructionHUB
           </Typography>
           <Box>
