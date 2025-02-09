@@ -11,16 +11,12 @@ import { GitHub } from '@mui/icons-material';
 import InstructionCard from '../../components/instruction/InstructionCard';
 import TheConstrain from '../../components/layout/TheConstrain';
 import { useClientUser } from '../../logic/auth/react-hooks';
-import useSWR from 'swr';
-import { fetchUserInstructions } from '../../logic/instruction/service';
+import { useUserInstructions } from '../../logic/instruction/react-hooks';
 
 function LandingPage() {
   const theme = useTheme();
   const clientUser = useClientUser();
-  const { data: instructions, error } = useSWR(
-    `users/instructions/${clientUser?.id}`,
-    () => fetchUserInstructions(clientUser?.id),
-  );
+  const { data: instructions, error } = useUserInstructions(clientUser?.id);
   return (
     <Box
       sx={{

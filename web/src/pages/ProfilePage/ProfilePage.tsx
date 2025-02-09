@@ -7,6 +7,7 @@ import { useClientUser } from '../../logic/auth/react-hooks';
 import { fetchUserInstructions } from '../../logic/instruction/service';
 import InstructionCard from '../../components/instruction/InstructionCard';
 import { Add } from '@mui/icons-material';
+import { useUserInstructions } from '../../logic/instruction/react-hooks';
 
 function ProfilePage() {
   const [tabValue, setTabValue] = useState(0);
@@ -18,10 +19,7 @@ function ProfilePage() {
 
   const [instructionModalOpen, setInstructionModalOpen] = useState(false);
 
-  const { data: instructions, error } = useSWR(
-    `users/instructions/${clientUser?.id}`,
-    () => fetchUserInstructions(clientUser?.id),
-  );
+  const { data: instructions, error } = useUserInstructions(clientUser?.id);
 
   return (
     <>
@@ -29,7 +27,7 @@ function ProfilePage() {
         open={instructionModalOpen}
         onClose={() => setInstructionModalOpen(false)}
       />
-      <TheConstrain>
+      <TheConstrain sx={{ mt: 4 }}>
         <Typography variant="h5" sx={{ mb: 2 }}>
           Profile
         </Typography>

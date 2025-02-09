@@ -1,6 +1,8 @@
+import { toast, ToastContainer } from 'react-toastify';
 import CssBaseline from '@mui/material/CssBaseline';
-import { createColorScheme, createTheme, ThemeProvider } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material';
 import AppRoutes from './routes/AppRoutes';
+import { useEffect } from 'react';
 
 const theme = createTheme({
   palette: {
@@ -25,6 +27,13 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <AppRoutes />
+      <ToastContainer
+        position="bottom-center"
+        hideProgressBar
+        limit={3}
+        autoClose={3000}
+        theme="dark"
+      />
     </ThemeProvider>
   );
 }

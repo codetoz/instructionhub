@@ -53,6 +53,15 @@ export async function fetchUserInstructions(userId?: string) {
   const response = await apiClient.get<InstructionDetails[]>(
     `/users/${userId}/instructions`,
   );
-  console.log(response.data);
+  return response.data;
+}
+
+export async function fetchInstruction(
+  userId: string,
+  instructionSlug: string,
+) {
+  const response = await apiClient.get<InstructionDetails>(
+    `/users/${userId}/instructions/${instructionSlug}`,
+  );
   return response.data;
 }

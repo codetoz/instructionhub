@@ -47,10 +47,7 @@ function TheHeader() {
   };
 
   return (
-    <AppBar
-      position="static"
-      sx={{ backgroundColor: 'background.default', mb: 4 }}
-    >
+    <AppBar position="static" sx={{ backgroundColor: 'background.default' }}>
       <TheConstrain>
         <Toolbar sx={{ px: '0 !important' }}>
           <Typography
