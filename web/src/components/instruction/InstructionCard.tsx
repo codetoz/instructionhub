@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Inventory2Rounded } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -10,37 +10,39 @@ import {
   styled,
 } from '@mui/material';
 import { calculateTimePassed, TimePassed } from '../../helpers/date';
+import { useClientUser } from '../../logic/auth/react-hooks';
 
 interface InstructionCardProps {
-  instructionId: string;
-  instructionName: string;
-  userName: string;
-  userAvatarUrl: string;
-  groupName: string;
+  id: string;
+  title: string;
+  userId: string;
+  groupId: string;
   version: string;
   updatedAt: Date;
   description: string;
-  groupId: string;
+  slug: string;
 }
 
 export function InstructionCard(props: InstructionCardProps) {
   const navigate = useNavigate();
 
+  const user = useClientUser();
+
   const timePassed = calculateTimePassed(props.updatedAt);
   const formattedTimePassed = formatTimePassed(timePassed);
 
   const handleCardClick = () => {
-    navigate(`/instruction/${props.instructionId}`);
+    navigate(`/${user?.username}/${props.slug}`);
   };
 
-  const handleUserClick = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    navigate(`/profile/${props.userName}`);
-  };
+  const handleUserClick = useCallback(() => {
+    if (!user) return;
+    navigate(`/${user?.username}`);
+  }, [user]);
 
   const handleGroupClick = (event: React.MouseEvent) => {
     event.stopPropagation();
-    navigate(`/group/${props.groupId}`);
+    navigate(`/group/group-slug`);
   };
 
   return (
@@ -57,7 +59,7 @@ export function InstructionCard(props: InstructionCardProps) {
       }}
     >
       <CardContent>
-        <Typography variant="h6">{props.instructionName}</Typography>
+        <Typography variant="h6">{props.title}</Typography>
         <Typography variant="caption" color="textSecondary">
           Updated {formattedTimePassed} · Version {props.version}
         </Typography>
@@ -73,12 +75,12 @@ export function InstructionCard(props: InstructionCardProps) {
         >
           <TextButton onClick={handleUserClick}>
             <Avatar
-              src={props.userAvatarUrl}
-              alt={props.userName}
+              src={'AvatarUrl'}
+              alt={user?.username}
               sx={{ width: 32, height: 32 }}
             />
             <Typography className="text" variant="body2" color="text.primary">
-              {props.userName}
+              {user?.username}
             </Typography>
           </TextButton>
           <TextButton onClick={handleGroupClick}>
@@ -86,7 +88,7 @@ export function InstructionCard(props: InstructionCardProps) {
               sx={{ width: '18px', height: '18px', color: 'text.secondary' }}
             />
             <Typography className="text" variant="body2" color="text.primary">
-              {props.groupName}
+              {'groupName'}
             </Typography>
           </TextButton>
         </Box>

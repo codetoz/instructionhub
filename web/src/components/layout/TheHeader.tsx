@@ -12,15 +12,15 @@ import {
 } from '@mui/material';
 import { MouseEvent, useState } from 'react';
 import { PersonOutline, Logout } from '@mui/icons-material';
-import { useNavigate, useRouteLoaderData } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import TheConstrain from './TheConstrain';
 import Button from '../common/Button';
-import { User } from '../../logic/auth/types';
 import { login, logout } from '../../logic/auth/service';
+import { useClientUser } from '../../logic/auth/react-hooks';
 
 function TheHeader() {
   const navigate = useNavigate();
-  const { user } = useRouteLoaderData('root') as { user?: User };
+  const user = useClientUser();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenuOpen = (event: MouseEvent<HTMLElement>) => {

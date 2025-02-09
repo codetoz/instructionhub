@@ -1,5 +1,5 @@
 import apiClient from '../apiClient';
-import { Instruction, InstructionType } from './types';
+import { Instruction, InstructionDetails, InstructionType } from './types';
 
 export async function getInstructions() {
   const response = await apiClient.get('/instructions');
@@ -39,5 +39,15 @@ export async function updateInstruction(
     description,
     content,
   });
+  return response.data;
+}
+
+export async function fetchUserInstructions(userId?: string) {
+  console.log('fetching user instructions', userId);
+  if (!userId) return undefined;
+  const response = await apiClient.get<InstructionDetails[]>(
+    `/users/${userId}/instructions`,
+  );
+  console.log(response.data);
   return response.data;
 }

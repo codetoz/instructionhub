@@ -10,9 +10,17 @@ import {
 import { GitHub } from '@mui/icons-material';
 import InstructionCard from '../../components/instruction/InstructionCard';
 import TheConstrain from '../../components/layout/TheConstrain';
+import { useClientUser } from '../../logic/auth/react-hooks';
+import useSWR from 'swr';
+import { fetchUserInstructions } from '../../logic/instruction/service';
 
 function LandingPage() {
   const theme = useTheme();
+  const clientUser = useClientUser();
+  const { data: instructions, error } = useSWR(
+    `users/instructions/${clientUser?.id}`,
+    () => fetchUserInstructions(clientUser?.id),
+  );
   return (
     <Box
       sx={{
@@ -147,20 +155,19 @@ function LandingPage() {
               gap: 2,
             }}
           >
-            {[...Array(6)].map((_, idx) => (
+            {instructions?.map((i) => (
               <InstructionCard
-                key={idx}
-                instructionName="Instruction name"
-                instructionId={String(idx)}
-                description="Tempor deserunt commodo tempor eiusmod non nisi magna enim mollit eiusmod aute est elit aute."
-                userName="user name"
-                groupName="group name"
+                key={i.id}
+                title={i.title}
+                id={i.id}
+                description={i.description}
                 groupId=";fasdklfj"
-                updatedAt={new Date('December 14, 2024')}
+                updatedAt={new Date(i.updatedAt)}
                 version="0.4.1"
+                slug={i.slug}
+                userId={i.createdBy}
                 // starsCount={Math.floor(Math.random() * 10)}
                 // clientUserGaveStar={Math.random() > 0.5 ? true : false}
-                userAvatarUrl="fads;flkj"
               />
             ))}
           </Box>
