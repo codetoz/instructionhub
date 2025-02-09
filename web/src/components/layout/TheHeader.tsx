@@ -58,16 +58,20 @@ function TheHeader() {
             sx={{
               flexGrow: 1,
               cursor: 'pointer',
-              transition: 'opacity 0.2s ease',
+              transition: 'all 0.2s ease',
               '&:hover': {
                 opacity: '0.8',
               },
+              '&:active': {
+                transform: 'translateY(4px)',
+              },
+              color: 'text.primary',
             }}
             onClick={() => {
               navigate('/');
             }}
           >
-            InstructionHUB
+            Instruction<span style={{ fontWeight: 'bold' }}>HUB</span>
           </Typography>
           <Box>
             {!user && (

@@ -1,8 +1,8 @@
 import { useRouteLoaderData } from 'react-router-dom';
 import { User } from './types';
+import useAuthStore from "./store";
 
 export function useClientUser() {
-  const { user } = useRouteLoaderData('root') as { user?: User };
+  return useAuthStore(state=>state.user)
 
-  return user;
 }

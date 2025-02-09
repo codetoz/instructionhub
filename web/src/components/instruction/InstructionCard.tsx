@@ -35,10 +35,14 @@ export function InstructionCard(props: InstructionCardProps) {
     navigate(`/${user?.username}/${props.slug}`);
   };
 
-  const handleUserClick = useCallback(() => {
-    if (!user) return;
-    navigate(`/${user?.username}`);
-  }, [user]);
+  const handleUserClick = useCallback(
+    (event: React.MouseEvent) => {
+      event.stopPropagation();
+      if (!user) return;
+      navigate(`/${user?.username}`);
+    },
+    [user],
+  );
 
   const handleGroupClick = (event: React.MouseEvent) => {
     event.stopPropagation();

@@ -13,6 +13,7 @@ import {
   createInstruction,
   updateInstruction,
 } from '../../logic/instruction/service';
+import { useClientUser } from '../../logic/auth/react-hooks';
 
 interface InstructionModalProps {
   open: boolean;
@@ -42,6 +43,8 @@ export default function InstructionModal({
     clearErrors,
   } = useForm<FormValues>();
   const [loading, setLoading] = useState(false);
+
+  const clientUser = useClientUser();
 
   const title = watch('title');
   const slug = watch('slug') || '';
@@ -122,7 +125,6 @@ export default function InstructionModal({
             {...register('title', { required: true })}
           />
           <TextField
-            autoFocus
             margin="dense"
             label="Slug*"
             type="text"
@@ -168,6 +170,7 @@ export default function InstructionModal({
           type="submit"
           variant="contained"
           disabled={loading}
+          color="secondary"
         >
           {isEditMode ? 'Save' : 'Create'}
         </Button>

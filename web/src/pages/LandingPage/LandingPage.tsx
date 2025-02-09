@@ -127,7 +127,6 @@ function LandingPage() {
           href={import.meta.env.VITE_GITHUB_PROJECT_URL}
           target="_blank"
           rel="noopener"
-          color="inherit"
           startIcon={<GitHub />}
         >
           GitHub

@@ -6,6 +6,7 @@ import useSWR from 'swr';
 import { useClientUser } from '../../logic/auth/react-hooks';
 import { fetchUserInstructions } from '../../logic/instruction/service';
 import InstructionCard from '../../components/instruction/InstructionCard';
+import { Add } from '@mui/icons-material';
 
 function ProfilePage() {
   const [tabValue, setTabValue] = useState(0);
@@ -37,7 +38,36 @@ function ProfilePage() {
           <Tab label="Groups" />
         </Tabs>
         {tabValue === 0 && (
-          <Box sx={{ mt: 2 }}>
+          <Box sx={{ mt: 4 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                mb: 3,
+                justifyContent: 'space-between',
+                borderBottom: '1px solid rgba(255,255,255, 0.12)',
+                pb: 1,
+              }}
+            >
+              <Typography variant="h5">Instructions</Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+              >
+                <Button
+                  size="small"
+                  color="primary"
+                  variant="outlined"
+                  startIcon={<Add />}
+                  onClick={() => setInstructionModalOpen(true)}
+                >
+                  Add
+                </Button>
+              </Box>
+            </Box>
             <Typography variant="body1">
               Here you can manage all of your instructions. Create, edit, or
               remove instructions as needed.
