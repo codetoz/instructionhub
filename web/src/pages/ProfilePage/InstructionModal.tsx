@@ -50,7 +50,13 @@ export default function InstructionModal({
 
   useEffect(() => {
     if (title) {
-      setValue('slug', slugify(title, '-'));
+      setValue(
+        'slug',
+        slugify(title, {
+          replacement: '-',
+          lower: true,
+        }),
+      );
       clearErrors('slug');
     }
   }, [title]);
