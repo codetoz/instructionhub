@@ -53,7 +53,8 @@ function TheHeader() {
           <Typography
             variant="h6"
             sx={{
-              flexGrow: 1,
+              flexGrow: 0,
+              marginRight: 'auto',
               cursor: 'pointer',
               transition: 'all 0.2s ease',
               '&:hover': {
