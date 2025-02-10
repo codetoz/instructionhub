@@ -11,6 +11,7 @@ import { Instruction } from './instruction.entity'
 import { CreateInstructionDto } from './dto/create-instruction.dto'
 import { Group } from '../group/group.entity'
 import { InstructionType } from './enum/instruction-type.enum'
+import { UpdateInstructionDto } from './dto/update-instruction.dto'
 
 @Injectable()
 export class InstructionService {
@@ -112,5 +113,56 @@ export class InstructionService {
       throw new ForbiddenException('You do not own this instruction')
     }
     await this.instructionRepository.remove(instruction)
+  }
+
+  async updateInstruction(
+    requestUserId: string,
+    instructionId: string,
+    dto: UpdateInstructionDto,
+  ): Promise<Instruction> {
+    const instruction = await this.instructionRepository.findOne({
+      where: { id: instructionId },
+    })
+
+    if (!instruction) {
+      throw new NotFoundException(`Instruction '${instructionId}' not found`)
+    }
+    if (instruction.createdBy !== requestUserId) {
+      throw new ForbiddenException('You do not own this instruction')
+    }
+
+    // If slug is provided, ensure it's not used by another instruction of the same user
+    if (dto.slug !== undefined) {
+      const existing = await this.instructionRepository.findOne({
+        where: {
+          slug: dto.slug,
+          createdBy: requestUserId,
+        },
+      })
+      if (existing && existing.id !== instructionId) {
+        throw new ConflictException(
+          `Instruction slug '${dto.slug}' already used by you`,
+        )
+      }
+      instruction.slug = dto.slug
+    }
+
+    if (dto.title !== undefined) {
+      instruction.title = dto.title
+    }
+    if (dto.description !== undefined) {
+      instruction.description = dto.description
+    }
+    if (dto.content !== undefined) {
+      instruction.content = dto.content
+    }
+    if (dto.type !== undefined) {
+      instruction.type = dto.type
+    }
+    if (dto.groupId !== undefined) {
+      instruction.groupId = dto.groupId
+    }
+
+    return this.instructionRepository.save(instruction)
   }
 }
