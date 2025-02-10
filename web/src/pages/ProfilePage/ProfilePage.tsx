@@ -6,6 +6,7 @@ import useSWR from 'swr';
 import { useClientUser } from '../../logic/auth/react-hooks';
 import { fetchUserInstructions } from '../../logic/instruction/service';
 import InstructionCard from '../../components/instruction/InstructionCard';
+import InstructionCardSkeleton from '../../components/instruction/InstructionCardSkeleton';
 import { Add } from '@mui/icons-material';
 import { useUserInstructions } from '../../logic/instruction/react-hooks';
 
@@ -70,7 +71,21 @@ function ProfilePage() {
               Here you can manage all of your instructions. Create, edit, or
               remove instructions as needed.
             </Typography>
-            {instructions?.length ? (
+            {!instructions && !error ? (
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+                  gap: 2,
+                  mt: 2,
+                  p: 2,
+                }}
+              >
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <InstructionCardSkeleton key={i} />
+                ))}
+              </Box>
+            ) : instructions?.length ? (
               <Box
                 sx={{
                   display: 'grid',
@@ -87,10 +102,10 @@ function ProfilePage() {
                     title={i.title}
                     slug={i.slug}
                     userId={i.createdBy}
-                    version={'0.0.1'}
+                    version=""
                     updatedAt={new Date(i.updatedAt)}
                     description={i.description}
-                    groupId={''}
+                    groupId={i.groupId}
                   />
                 ))}
               </Box>

@@ -10,7 +10,7 @@ interface InstructionCardProps {
   id: string;
   title: string;
   userId: string;
-  groupId: string;
+  groupId?: string;
   version: string;
   updatedAt: Date;
   description: string;
@@ -45,7 +45,8 @@ export function InstructionCard(props: InstructionCardProps) {
       <CardContent>
         <Typography variant="h6">{props.title}</Typography>
         <Typography variant="caption" color="textSecondary">
-          Updated {formattedTimePassed} · Version {props.version}
+          Updated {formattedTimePassed}{' '}
+          {props.version && `· Version ${props.version}`}
         </Typography>
         <Typography variant="body2" mt={1}>
           {props.description}

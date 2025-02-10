@@ -4,4 +4,4 @@ dist
 build
 .env
 .vscode
-idea
+.idea
