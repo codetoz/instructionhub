@@ -20,7 +20,7 @@ export async function createInstruction({
   description,
   title,
   content,
-  type = InstructionType.PUBLIC,
+  type = InstructionType.PRIVATE,
   slug,
 }: Instruction) {
   try {
