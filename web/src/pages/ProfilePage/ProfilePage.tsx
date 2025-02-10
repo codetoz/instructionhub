@@ -96,14 +96,8 @@ function ProfilePage() {
                 {instructions.map((i) => (
                   <InstructionCard
                     key={i.id}
-                    id={i.id}
-                    title={i.title}
-                    slug={i.slug}
-                    userId={i.createdBy}
-                    version=""
-                    updatedAt={new Date(i.updatedAt)}
-                    description={i.description}
-                    groupId={i.groupId}
+                    instruction={i}
+                    showActionButtons
                   />
                 ))}
               </Box>

@@ -4,6 +4,7 @@ import { Instruction, InstructionDetails, InstructionType } from './types';
 import { getClientUser } from '../auth/service';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
+import useAuthStore from '../auth/store';
 
 export async function getInstructions() {
   const response = await apiClient.get('/instructions');
@@ -49,17 +50,33 @@ export async function updateInstruction(
   id: string,
   { title, description, content }: Partial<Instruction>,
 ) {
-  const response = await apiClient.put(`/instructions/${id}`, {
-    title,
-    description,
-    content,
-  });
-  return response.data;
+  try {
+    const response = await apiClient.patch(`/instructions/${id}`, {
+      title,
+      description,
+      content,
+    });
+    const clientUser = useAuthStore.getState().user;
+    mutate(`users/${clientUser?.id}/instructions`);
+    toast.success('Instruction edited successfully');
+    return response.data;
+  } catch (e) {
+    toast.error('Failed to edit instruction');
+    throw e;
+  }
 }
 
 export async function deleteInstruction(id: string) {
-  const response = await apiClient.delete(`/instructions/${id}`);
-  return response.data;
+  try {
+    const response = await apiClient.delete(`/instructions/${id}`);
+    const clientUser = useAuthStore.getState().user;
+    mutate(`users/${clientUser?.id}/instructions`);
+    toast.success('Instruction deleted successfully');
+    return response.data;
+  } catch (e) {
+    toast.error('Failed to delete instruction');
+    throw e;
+  }
 }
 
 export async function fetchUserInstructions(userId?: string) {

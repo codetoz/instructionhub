@@ -13,12 +13,13 @@ import {
   createInstruction,
   updateInstruction,
 } from '../../logic/instruction/service';
-import { useClientUser } from '../../logic/auth/react-hooks';
+import { useInstruction } from '../../logic/instruction/react-hooks';
+import { InstructionDetails } from '../../logic/instruction/types';
 
 interface InstructionModalProps {
   open: boolean;
   onClose: () => void;
-  instructionId?: string;
+  instruction?: InstructionDetails;
 }
 
 interface FormValues {
@@ -31,8 +32,10 @@ interface FormValues {
 export default function InstructionModal({
   open,
   onClose,
-  instructionId,
+  instruction,
 }: InstructionModalProps) {
+  const isEditMode = instruction;
+
   const {
     register,
     handleSubmit,
@@ -41,15 +44,14 @@ export default function InstructionModal({
     watch,
     setValue,
     clearErrors,
-  } = useForm<FormValues>();
-  const [loading, setLoading] = useState(false);
+  } = useForm<FormValues>({
+    defaultValues: isEditMode ? instruction : undefined,
+  });
 
-  const clientUser = useClientUser();
+  const [loading, setLoading] = useState(false);
 
   const title = watch('title');
   const slug = watch('slug') || '';
-
-  const isEditMode = !!instructionId;
 
   useEffect(() => {
     if (title) {
@@ -65,15 +67,10 @@ export default function InstructionModal({
   }, [title]);
 
   useEffect(() => {
-    if (isEditMode) {
-      // Fetch existing instruction data if needed
-      // Example: we could fetch the instruction details here, then reset the form with the data
-      // For now, let's assume the parent has the logic or we do not need initial data.
-      // reset({ title: ..., description: ... });
-    } else {
+    if (!isEditMode) {
       reset({ title: '', description: '' });
     }
-  }, [isEditMode, instructionId, reset]);
+  }, [isEditMode, instruction?.slug, reset]);
 
   const onSubmit = async (data: FormValues) => {
     try {
@@ -86,11 +83,12 @@ export default function InstructionModal({
           slug: data.slug,
         });
       } else {
-        if (instructionId) {
-          await updateInstruction(instructionId, {
+        if (instruction) {
+          await updateInstruction(instruction.id, {
             title: data.title,
             description: data.description,
             content: data.content,
+            slug: data.slug,
           });
         }
       }

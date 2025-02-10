@@ -9,12 +9,12 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
+  Button,
 } from '@mui/material';
 import { MouseEvent, useState } from 'react';
 import { PersonOutline, Logout } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import TheConstrain from './TheConstrain';
-import Button from '../common/Button';
 import { login, logout } from '../../logic/auth/service';
 import { useClientUser } from '../../logic/auth/react-hooks';
 
@@ -75,17 +75,15 @@ function TheHeader() {
             {!user && (
               <>
                 <Button
-                  label="Sign In"
                   color="inherit"
                   onClick={login}
                   sx={{ color: '#fff', mr: 1 }}
-                />
-                <Button
-                  label="Sign Up"
-                  color="inherit"
-                  onClick={login}
-                  sx={{ color: '#fff' }}
-                />
+                >
+                  Sign In
+                </Button>
+                <Button color="inherit" onClick={login} sx={{ color: '#fff' }}>
+                  Sign Up
+                </Button>
               </>
             )}
             {user && (

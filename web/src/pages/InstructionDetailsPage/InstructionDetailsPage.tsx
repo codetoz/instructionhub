@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Avatar,
   Box,
@@ -6,7 +6,11 @@ import {
   styled,
   Typography,
   Skeleton,
+  Button,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { mutate } from 'swr';
+import { deleteInstruction } from '../../logic/instruction/service';
 import { toast } from 'react-toastify';
 import TheConstrain from '../../components/layout/TheConstrain';
 import InstructionNavigationButtons from '../../components/instruction/instruction-buttons';
@@ -17,6 +21,7 @@ import { useClientUser } from '../../logic/auth/react-hooks';
 import { copyToClipboard } from '../../helpers/copy-to-clipboard';
 import { AxiosError } from 'axios';
 import TextClamp from '../../components/common/TextClamp';
+import InstructionModal from '../ProfilePage/InstructionModal';
 
 function InstructionDetailsPage() {
   const params = useParams() as {
@@ -25,12 +30,26 @@ function InstructionDetailsPage() {
   };
 
   const clientUser = useClientUser();
+  const [instructionModalOpen, setInstructionModalOpen] = useState(false);
 
   const {
     data: instruction,
     error,
     isLoading,
   } = useInstruction(clientUser?.id || '', params['instruction-slug']);
+
+  const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    if (!instruction) return;
+    await deleteInstruction(instruction.id);
+    navigate(`/${clientUser?.username}`);
+  };
+
+  const handleEdit = async () => {
+    if (!instruction) return;
+    setInstructionModalOpen(true);
+  };
 
   const handleCopyContent = useCallback(() => {
     if (!instruction) return;
@@ -65,7 +84,7 @@ function InstructionDetailsPage() {
     );
   } else if (!instruction && !error) {
     return (
-      <TheConstrain>
+      <TheConstrain sx={{ mt: 4 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Skeleton variant="circular" width={40} height={40} />
           <Skeleton variant="text" width="80%" />
@@ -78,6 +97,14 @@ function InstructionDetailsPage() {
 
   return (
     <>
+      {instructionModalOpen && (
+        <InstructionModal
+          open={instructionModalOpen}
+          onClose={() => setInstructionModalOpen(false)}
+          instruction={instruction}
+        />
+      )}
+
       <Header>
         <TheConstrain
           sx={{
@@ -94,6 +121,26 @@ function InstructionDetailsPage() {
               {instruction?.title}
             </Typography>
             <InstructionNavigationButtons userId={''} groupId={''} />
+            {instruction?.createdBy === clientUser?.id && (
+              <Box sx={{ display: 'flex', gap: 1 }}>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  color="primary"
+                  onClick={handleEdit}
+                >
+                  Edit
+                </Button>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  color="error"
+                  onClick={handleDelete}
+                >
+                  Delete
+                </Button>
+              </Box>
+            )}
           </InstructionTitle>
           <Typography sx={{ width: '100%' }}>
             {instruction?.description}

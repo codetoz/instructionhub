@@ -153,16 +153,7 @@ function LandingPage() {
               : instructions?.map((i) => (
                   <InstructionCard
                     key={i.id}
-                    title={i.title}
-                    id={i.id}
-                    description={i.description}
-                    groupId={i.groupId}
-                    updatedAt={new Date(i.updatedAt)}
-                    version=""
-                    slug={i.slug}
-                    userId={i.createdBy}
-                    // starsCount={Math.floor(Math.random() * 10)}
-                    // clientUserGaveStar={Math.random() > 0.5 ? true : false}
+                    instruction={i}
                   />
                 ))}
           </Box>
