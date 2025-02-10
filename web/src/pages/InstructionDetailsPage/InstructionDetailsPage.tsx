@@ -1,5 +1,12 @@
 import { useCallback, useEffect } from 'react';
-import { Avatar, Box, IconButton, styled, Typography } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  IconButton,
+  styled,
+  Typography,
+  Skeleton,
+} from '@mui/material';
 import { toast } from 'react-toastify';
 import TheConstrain from '../../components/layout/TheConstrain';
 import InstructionNavigationButtons from '../../components/instruction/instruction-buttons';
@@ -18,10 +25,11 @@ function InstructionDetailsPage() {
 
   const clientUser = useClientUser();
 
-  const { data: instruction, error } = useInstruction(
-    clientUser?.id || '',
-    params['instruction-slug'],
-  );
+  const {
+    data: instruction,
+    error,
+    isLoading,
+  } = useInstruction(clientUser?.id || '', params['instruction-slug']);
 
   const handleCopyContent = useCallback(() => {
     if (!instruction) return;
@@ -42,8 +50,27 @@ function InstructionDetailsPage() {
     error.status < 500
   ) {
     return (
+      <TheConstrain sx={{ mt: 4 }}>
+        <Typography variant="h6">404: No Instruction found</Typography>
+      </TheConstrain>
+    );
+  } else if (error && !error.response) {
+    return (
+      <TheConstrain sx={{ mt: 4 }}>
+        <Typography variant="h6">
+          Please check your internet connection and try again
+        </Typography>
+      </TheConstrain>
+    );
+  } else if (!instruction && !error) {
+    return (
       <TheConstrain>
-        <h3>404: No Instruction found</h3>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Skeleton variant="circular" width={40} height={40} />
+          <Skeleton variant="text" width="80%" />
+          <Skeleton variant="text" width="60%" />
+          <Skeleton variant="rectangular" width="100%" height={200} />
+        </Box>
       </TheConstrain>
     );
   }

@@ -1,4 +1,5 @@
 import { toast, ToastContainer } from 'react-toastify';
+import { SWRConfig } from 'swr';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material';
 import AppRoutes from './routes/AppRoutes';
@@ -24,17 +25,28 @@ const theme = createTheme({
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <AppRoutes />
-      <ToastContainer
-        position="bottom-center"
-        hideProgressBar
-        limit={3}
-        autoClose={3000}
-        theme="dark"
-      />
-    </ThemeProvider>
+    <SWRConfig
+      value={{
+        shouldRetryOnError: (error) => {
+          if (error?.response?.status >= 400 && error?.response?.status < 500) {
+            return false;
+          }
+          return true;
+        },
+      }}
+    >
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <AppRoutes />
+        <ToastContainer
+          position="bottom-center"
+          hideProgressBar
+          limit={3}
+          autoClose={3000}
+          theme="dark"
+        />
+      </ThemeProvider>
+    </SWRConfig>
   );
 }
 
