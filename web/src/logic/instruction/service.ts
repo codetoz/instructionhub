@@ -61,7 +61,11 @@ export async function updateInstruction(
     toast.success('Instruction edited successfully');
     return response.data;
   } catch (e) {
-    toast.error('Failed to edit instruction');
+    if (e instanceof AxiosError) {
+      if (e.response?.status === 409) {
+        toast.error("You have already created an Instruction with slug 'test'");
+      }
+    } else toast.error('Failed to edit instruction');
     throw e;
   }
 }
