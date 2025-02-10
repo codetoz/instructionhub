@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Avatar, Box, IconButton, styled, Typography } from '@mui/material';
 import { toast } from 'react-toastify';
 import TheConstrain from '../../components/layout/TheConstrain';
@@ -8,6 +8,7 @@ import { useInstruction } from '../../logic/instruction/react-hooks';
 import { useParams } from 'react-router-dom';
 import { useClientUser } from '../../logic/auth/react-hooks';
 import { copyToClipboard } from '../../helpers/copy-to-clipboard';
+import { AxiosError } from 'axios';
 
 function InstructionDetailsPage() {
   const params = useParams() as {
@@ -17,7 +18,7 @@ function InstructionDetailsPage() {
 
   const clientUser = useClientUser();
 
-  const { data: instruction } = useInstruction(
+  const { data: instruction, error } = useInstruction(
     clientUser?.id || '',
     params['instruction-slug'],
   );
@@ -28,6 +29,24 @@ function InstructionDetailsPage() {
       toast.success('Instruction copied to clipboard successfully.');
     });
   }, [instruction]);
+
+  useEffect(() => {
+    console.log(error);
+  }, [error]);
+
+  if (
+    error &&
+    error instanceof AxiosError &&
+    error.status &&
+    error.status >= 400 &&
+    error.status < 500
+  ) {
+    return (
+      <TheConstrain>
+        <h3>404: No Instruction found</h3>
+      </TheConstrain>
+    );
+  }
 
   return (
     <>
