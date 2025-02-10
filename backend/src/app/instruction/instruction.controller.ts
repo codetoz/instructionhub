@@ -6,10 +6,15 @@ import {
   Body,
   Req,
   UseGuards,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  Patch,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger'
 import { InstructionService } from './instruction.service'
 import { CreateInstructionDto } from './dto/create-instruction.dto'
+import { UpdateInstructionDto } from './dto/update-instruction.dto'
 import {
   KeycloakAuthGuard,
   AuthenticatedRequest,
@@ -65,5 +70,39 @@ export class InstructionController {
     @Param('userId') userId: string,
   ): Promise<Instruction[]> {
     return this.instructionService.findInstructions(user.id, userId)
+  }
+
+  @Delete('instructions/:instructionId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(KeycloakAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 204,
+    description: 'Instruction deleted successfully.',
+  })
+  async deleteInstruction(
+    @Req() { user }: AuthenticatedRequest,
+    @Param('instructionId') instructionId: string,
+  ): Promise<void> {
+    await this.instructionService.deleteInstructionById(user.id, instructionId)
+  }
+
+  @Patch('instructions/:instructionId')
+  @UseGuards(KeycloakAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    description: 'Instruction updated successfully.',
+  })
+  async updateInstruction(
+    @Req() { user }: AuthenticatedRequest,
+    @Param('instructionId') instructionId: string,
+    @Body() dto: UpdateInstructionDto,
+  ): Promise<Instruction> {
+    return this.instructionService.updateInstruction(
+      user.id,
+      instructionId,
+      dto,
+    )
   }
 }
