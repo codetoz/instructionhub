@@ -57,17 +57,7 @@ function LandingPage() {
               backgroundColor: '#333',
             }}
           />
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: '#555',
-              '&:hover': {
-                backgroundColor: '#444',
-              },
-            }}
-          >
-            Search
-          </Button>
+          <Button variant="contained">Search</Button>
         </Box>
         <Typography variant="body1" sx={{ mb: 4 }}>
           You can also browse all instructions or try one of the sample queries:
