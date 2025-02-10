@@ -16,6 +16,7 @@ import { useParams } from 'react-router-dom';
 import { useClientUser } from '../../logic/auth/react-hooks';
 import { copyToClipboard } from '../../helpers/copy-to-clipboard';
 import { AxiosError } from 'axios';
+import TextClamp from '../../components/common/TextClamp';
 
 function InstructionDetailsPage() {
   const params = useParams() as {
@@ -127,14 +128,15 @@ function InstructionDetailsPage() {
               <ContentCopyRounded />
             </IconButton>
           </Box>
-          <Typography
+          <TextClamp text={instruction?.content || ''} />
+          {/* <Typography
             color="textSecondary"
             variant="body1"
             component="pre"
             sx={{ textWrap: 'wrap' }}
           >
             {instruction?.content}
-          </Typography>
+          </Typography> */}
         </TheConstrain>
       </Body>
     </>
