@@ -1,46 +1,32 @@
 import React from 'react';
-import { Inventory2Rounded } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import {
-  Card,
-  CardContent,
-  Box,
-  Typography,
-  Avatar,
-  styled,
-} from '@mui/material';
-import { calculateTimePassed, TimePassed } from '../../helpers/date';
+import { Card, CardContent, Typography } from '@mui/material';
+import { calculateTimePassed } from '../../helpers/date';
+import { useClientUser } from '../../logic/auth/react-hooks';
+import InstructionNavigationButtons from './instruction-buttons';
+import { formatTimePassed } from '../../logic/instruction/helpers';
 
 interface InstructionCardProps {
-  instructionId: string;
-  instructionName: string;
-  userName: string;
-  userAvatarUrl: string;
-  groupName: string;
+  id: string;
+  title: string;
+  userId: string;
+  groupId: string;
   version: string;
   updatedAt: Date;
   description: string;
-  groupId: string;
+  slug: string;
 }
 
 export function InstructionCard(props: InstructionCardProps) {
   const navigate = useNavigate();
 
+  const user = useClientUser();
+
   const timePassed = calculateTimePassed(props.updatedAt);
   const formattedTimePassed = formatTimePassed(timePassed);
 
   const handleCardClick = () => {
-    navigate(`/instruction/${props.instructionId}`);
-  };
-
-  const handleUserClick = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    navigate(`/profile/${props.userName}`);
-  };
-
-  const handleGroupClick = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    navigate(`/group/${props.groupId}`);
+    navigate(`/${user?.username}/${props.slug}`);
   };
 
   return (
@@ -57,73 +43,21 @@ export function InstructionCard(props: InstructionCardProps) {
       }}
     >
       <CardContent>
-        <Typography variant="h6">{props.instructionName}</Typography>
+        <Typography variant="h6">{props.title}</Typography>
         <Typography variant="caption" color="textSecondary">
           Updated {formattedTimePassed} · Version {props.version}
         </Typography>
         <Typography variant="body2" mt={1}>
           {props.description}
         </Typography>
-        <Box
-          display="flex"
-          flexDirection="row"
-          alignItems="center"
-          mt={2}
-          gap="10px"
-        >
-          <TextButton onClick={handleUserClick}>
-            <Avatar
-              src={props.userAvatarUrl}
-              alt={props.userName}
-              sx={{ width: 32, height: 32 }}
-            />
-            <Typography className="text" variant="body2" color="text.primary">
-              {props.userName}
-            </Typography>
-          </TextButton>
-          <TextButton onClick={handleGroupClick}>
-            <Inventory2Rounded
-              sx={{ width: '18px', height: '18px', color: 'text.secondary' }}
-            />
-            <Typography className="text" variant="body2" color="text.primary">
-              {props.groupName}
-            </Typography>
-          </TextButton>
-        </Box>
+        <InstructionNavigationButtons
+          sx={{ mt: 2 }}
+          groupId={props.groupId}
+          userId={props.userId}
+        />
       </CardContent>
     </Card>
   );
 }
 
 export default InstructionCard;
-
-const TextButton = styled('div')`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  &:hover {
-    .text {
-      text-decoration: underline;
-    }
-  }
-`;
-
-function formatTimePassed(timePassed: TimePassed) {
-  switch (true) {
-    case timePassed.years > 0:
-      return `${timePassed.years} year${timePassed.years > 1 ? 's' : ''} ago`;
-    case timePassed.months > 0:
-      return `${timePassed.months} month${timePassed.months > 1 ? 's' : ''} ago`;
-    case timePassed.weeks > 0:
-      return `${timePassed.weeks} week${timePassed.weeks > 1 ? 's' : ''} ago`;
-    case timePassed.days > 0:
-      return `${timePassed.days} day${timePassed.days > 1 ? 's' : ''} ago`;
-    case timePassed.hours > 0:
-      return `${timePassed.hours} hour${timePassed.hours > 1 ? 's' : ''} ago`;
-    case timePassed.minutes > 0:
-      return `${timePassed.minutes} minute${timePassed.minutes > 1 ? 's' : ''} ago`;
-    default:
-      return 'just now';
-  }
-}

@@ -13,7 +13,7 @@ import InstructionDetailsPage from '../pages/InstructionDetailsPage/InstructionD
 import SearchPage from '../pages/SearchPage/SearchPage';
 import ProfilePage from '../pages/ProfilePage/ProfilePage';
 import TheHeader from '../components/layout/TheHeader';
-import { getAuthToken, getUserInfo } from '../logic/auth/service';
+import { getAuthToken, authenticateUser } from '../logic/auth/service';
 import { User } from '../logic/auth/types';
 import LoadingPage from '../pages/LoadingPage/LoadingPage';
 
@@ -23,8 +23,8 @@ const router = createBrowserRouter([
     path: '/',
     Component: Layout,
     loader: async () => {
-      const user = await getUserInfo();
-      return { user };
+      await authenticateUser();
+      return {};
     },
     hydrateFallbackElement: <LoadingPage />,
     children: [

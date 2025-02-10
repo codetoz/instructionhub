@@ -1,5 +1,6 @@
 import Keycloak, { KeycloakLoginOptions } from 'keycloak-js';
 import { KeycloakJwtPayload, User } from './types';
+import useAuthStore from './store';
 
 const keycloak = new Keycloak({
   url: import.meta.env.VITE_KEYCLOAK_URL,
@@ -7,7 +8,7 @@ const keycloak = new Keycloak({
   clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID,
 });
 
-export async function getUserInfo(): Promise<User | undefined> {
+export async function authenticateUser() {
   try {
     const authenticated = await keycloak.init({
       onLoad: 'check-sso',
@@ -15,7 +16,7 @@ export async function getUserInfo(): Promise<User | undefined> {
     });
     if (authenticated) {
       const keycloakPayload = keycloak.tokenParsed as KeycloakJwtPayload;
-      return {
+      useAuthStore.getState().setUser({
         fullName: keycloakPayload.name,
         username: keycloakPayload.preferred_username,
         id: keycloakPayload.sub,
@@ -24,7 +25,7 @@ export async function getUserInfo(): Promise<User | undefined> {
         name: keycloakPayload.given_name,
         email: keycloakPayload.email,
         emailVerified: keycloakPayload.email_verified,
-      };
+      });
     } else {
       return undefined;
     }
@@ -34,7 +35,7 @@ export async function getUserInfo(): Promise<User | undefined> {
 }
 
 export function login() {
-  keycloak.login();
+  void keycloak.login();
 }
 
 export function logout() {
@@ -43,4 +44,8 @@ export function logout() {
 
 export function getAuthToken() {
   return keycloak.token;
+}
+
+export function getClientUser() {
+  return useAuthStore.getState().user;
 }

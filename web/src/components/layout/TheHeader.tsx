@@ -12,15 +12,15 @@ import {
 } from '@mui/material';
 import { MouseEvent, useState } from 'react';
 import { PersonOutline, Logout } from '@mui/icons-material';
-import { useNavigate, useRouteLoaderData } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import TheConstrain from './TheConstrain';
 import Button from '../common/Button';
-import { User } from '../../logic/auth/types';
 import { login, logout } from '../../logic/auth/service';
+import { useClientUser } from '../../logic/auth/react-hooks';
 
 function TheHeader() {
   const navigate = useNavigate();
-  const { user } = useRouteLoaderData('root') as { user?: User };
+  const user = useClientUser();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenuOpen = (event: MouseEvent<HTMLElement>) => {
@@ -47,27 +47,29 @@ function TheHeader() {
   };
 
   return (
-    <AppBar
-      position="static"
-      sx={{ backgroundColor: 'background.default', mb: 4 }}
-    >
+    <AppBar position="static" sx={{ backgroundColor: 'background.default' }}>
       <TheConstrain>
         <Toolbar sx={{ px: '0 !important' }}>
           <Typography
             variant="h6"
             sx={{
-              flexGrow: 1,
+              flexGrow: 0,
+              marginRight: 'auto',
               cursor: 'pointer',
-              transition: 'opacity 0.2s ease',
+              transition: 'all 0.2s ease',
               '&:hover': {
                 opacity: '0.8',
               },
+              '&:active': {
+                transform: 'translateY(4px)',
+              },
+              color: 'text.primary',
             }}
             onClick={() => {
               navigate('/');
             }}
           >
-            InstructionHUB
+            Instruction<span style={{ fontWeight: 'bold' }}>HUB</span>
           </Typography>
           <Box>
             {!user && (
