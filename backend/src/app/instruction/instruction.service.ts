@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   ConflictException,
+  ForbiddenException,
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
@@ -95,5 +96,21 @@ export class InstructionService {
     const isOwner = requestUserId === instructions[0].createdBy
     if (!isOwner) return []
     return instructions
+  }
+
+  async deleteInstructionById(
+    requestUserId: string,
+    instructionId: string,
+  ): Promise<void> {
+    const instruction = await this.instructionRepository.findOne({
+      where: { id: instructionId },
+    })
+    if (!instruction) {
+      throw new NotFoundException(`Instruction '${instructionId}' not found`)
+    }
+    if (instruction.createdBy !== requestUserId) {
+      throw new ForbiddenException('You do not own this instruction')
+    }
+    await this.instructionRepository.remove(instruction)
   }
 }

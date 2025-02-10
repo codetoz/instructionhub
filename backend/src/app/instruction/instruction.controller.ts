@@ -6,6 +6,9 @@ import {
   Body,
   Req,
   UseGuards,
+  Delete,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger'
 import { InstructionService } from './instruction.service'
@@ -65,5 +68,20 @@ export class InstructionController {
     @Param('userId') userId: string,
   ): Promise<Instruction[]> {
     return this.instructionService.findInstructions(user.id, userId)
+  }
+
+  @Delete('instructions/:instructionId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(KeycloakAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 204,
+    description: 'Instruction deleted successfully.',
+  })
+  async deleteInstruction(
+    @Req() { user }: AuthenticatedRequest,
+    @Param('instructionId') instructionId: string,
+  ): Promise<void> {
+    await this.instructionService.deleteInstructionById(user.id, instructionId)
   }
 }
