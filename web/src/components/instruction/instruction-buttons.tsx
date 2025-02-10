@@ -1,12 +1,12 @@
 import { Avatar, Box, styled, SxProps, Typography } from '@mui/material';
-import { Inventory2Rounded } from '@mui/icons-material';
+import { Inventory2Rounded, PersonRounded } from '@mui/icons-material';
 import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useClientUser } from '../../logic/auth/react-hooks';
 
 interface Props {
   userId: string;
-  groupId: string;
+  groupId?: string;
   className?: string;
   sx?: SxProps;
 }
@@ -45,23 +45,23 @@ function InstructionNavigationButtons({
       className={className}
     >
       <TextButton onClick={handleUserClick}>
-        <Avatar
-          src={'AvatarUrl'}
-          alt={user?.username}
-          sx={{ width: 32, height: 32 }}
+        <PersonRounded
+          sx={{ width: '18px', height: '18px', color: 'text.secondary' }}
         />
         <Typography className="text" variant="body2" color="text.primary">
           {user?.username}
         </Typography>
       </TextButton>
-      <TextButton onClick={handleGroupClick}>
-        <Inventory2Rounded
-          sx={{ width: '18px', height: '18px', color: 'text.secondary' }}
-        />
-        <Typography className="text" variant="body2" color="text.primary">
-          {'groupName'}
-        </Typography>
-      </TextButton>
+      {groupId && (
+        <TextButton onClick={handleGroupClick}>
+          <Inventory2Rounded
+            sx={{ width: '16px', height: '16px', color: 'text.secondary' }}
+          />
+          <Typography className="text" variant="body2" color="text.primary">
+            {'groupName'}
+          </Typography>
+        </TextButton>
+      )}
     </Box>
   );
 }

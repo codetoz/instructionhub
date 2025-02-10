@@ -81,7 +81,7 @@ function InstructionDetailsPage() {
               <ContentCopyRounded />
             </IconButton>
           </Box>
-          <Typography color="textSecondary" variant="body1">
+          <Typography color="textSecondary" variant="body1" component="pre">
             {instruction?.content}
           </Typography>
         </TheConstrain>

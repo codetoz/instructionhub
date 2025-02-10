@@ -2,6 +2,8 @@ import { mutate } from 'swr';
 import apiClient from '../apiClient';
 import { Instruction, InstructionDetails, InstructionType } from './types';
 import { getClientUser } from '../auth/service';
+import { toast } from 'react-toastify';
+import { AxiosError } from 'axios';
 
 export async function getInstructions() {
   const response = await apiClient.get('/instructions');
@@ -33,7 +35,14 @@ export async function createInstruction({
     const clientUser = getClientUser();
     if (clientUser) void mutate(`users/instructions/${clientUser?.id}`);
     return response.data;
-  } catch (e) {}
+  } catch (e: any) {
+    if (e instanceof AxiosError) {
+      if (e.response?.status === 409) {
+        toast.error("You have already created an Instruction with slug 'test'");
+      }
+    }
+    throw e;
+  }
 }
 
 export async function updateInstruction(

@@ -87,10 +87,10 @@ function ProfilePage() {
                     title={i.title}
                     slug={i.slug}
                     userId={i.createdBy}
-                    version={'0.0.1'}
+                    version=""
                     updatedAt={new Date(i.updatedAt)}
                     description={i.description}
-                    groupId={''}
+                    groupId={i.groupId}
                   />
                 ))}
               </Box>

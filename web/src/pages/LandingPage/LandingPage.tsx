@@ -156,9 +156,9 @@ function LandingPage() {
                 title={i.title}
                 id={i.id}
                 description={i.description}
-                groupId=";fasdklfj"
+                groupId={i.groupId}
                 updatedAt={new Date(i.updatedAt)}
-                version="0.4.1"
+                version=""
                 slug={i.slug}
                 userId={i.createdBy}
                 // starsCount={Math.floor(Math.random() * 10)}
