@@ -79,8 +79,11 @@ const Root = styled('div')`
   position: relative;
   line-height: 1.5;
 
-  .text-content.clamped {
+  .text-content {
     white-space: pre-wrap;
+  }
+
+  .text-content.clamped {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     box-orient: vertical;
