@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 import useAuthStore from '../auth/store';
 import { openConfirmationDialog } from '../../components/modals/api';
+import { closeCurrentModal } from '../../hooks/use-modal/useModal';
 
 export async function getInstructions() {
   const response = await apiClient.get('/instructions');
@@ -77,6 +78,7 @@ export async function deleteInstruction(id: string) {
     contentText: 'Are you sure you want to delete this instruction?',
     onConfirm: async () => {
       try {
+        closeCurrentModal();
         const response = await apiClient.delete(`/instructions/${id}`);
         const clientUser = useAuthStore.getState().user;
         mutate(`users/${clientUser?.id}/instructions`);

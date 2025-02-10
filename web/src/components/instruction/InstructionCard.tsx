@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, Typography, Box, Button } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  Button,
+  IconButton,
+} from '@mui/material';
 import { calculateTimePassed } from '../../helpers/date';
 import { useClientUser } from '../../logic/auth/react-hooks';
 import InstructionNavigationButtons from './instruction-buttons';
@@ -10,6 +17,11 @@ import { toast } from 'react-toastify';
 import { deleteInstruction } from '../../logic/instruction/service';
 import InstructionModal from '../../pages/ProfilePage/InstructionModal';
 import { InstructionDetails } from '../../logic/instruction/types';
+import {
+  ContentCopyRounded,
+  DeleteRounded,
+  EditRounded,
+} from '@mui/icons-material';
 
 interface InstructionCardProps {
   instruction: InstructionDetails;
@@ -76,10 +88,9 @@ export function InstructionCard(props: InstructionCardProps) {
             userId={props.instruction.createdBy}
           />
           <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
-            <Button
-              variant="outlined"
+            <IconButton
               color="primary"
-              size="small"
+              size="medium"
               onClick={(e) => {
                 e.stopPropagation();
                 copyToClipboard(props.instruction.content).then(() =>
@@ -87,27 +98,25 @@ export function InstructionCard(props: InstructionCardProps) {
                 );
               }}
             >
-              Copy
-            </Button>
+              <ContentCopyRounded />
+            </IconButton>
             {props.showActionButtons &&
               props.instruction.createdBy === user?.id && (
                 <>
-                  <Button
-                    size="small"
-                    variant="outlined"
+                  <IconButton
+                    size="medium"
                     color="primary"
                     onClick={(e) => handleEdit(e)}
                   >
-                    Edit
-                  </Button>
-                  <Button
-                    size="small"
-                    variant="outlined"
+                    <EditRounded />
+                  </IconButton>
+                  <IconButton
+                    size="medium"
                     color="error"
                     onClick={(e) => handleDelete(e)}
                   >
-                    Delete
-                  </Button>
+                    <DeleteRounded />
+                  </IconButton>
                 </>
               )}
           </Box>
