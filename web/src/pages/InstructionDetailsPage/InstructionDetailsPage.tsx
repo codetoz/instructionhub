@@ -13,7 +13,11 @@ import { deleteInstruction } from '../../logic/instruction/service';
 import { toast } from 'react-toastify';
 import TheConstrain from '../../components/layout/TheConstrain';
 import InstructionNavigationButtons from '../../components/instruction/instruction-buttons';
-import { ContentCopyRounded } from '@mui/icons-material';
+import {
+  ContentCopyRounded,
+  DeleteRounded,
+  EditRounded,
+} from '@mui/icons-material';
 import { useInstruction } from '../../logic/instruction/react-hooks';
 import { useParams } from 'react-router-dom';
 import { useClientUser } from '../../logic/auth/react-hooks';
@@ -119,16 +123,16 @@ function InstructionDetailsPage() {
             {instruction?.createdBy === clientUser?.id && (
               <Box sx={{ display: 'flex', gap: 1 }}>
                 <Button
+                  startIcon={<EditRounded />}
                   size="small"
-                  variant="outlined"
                   color="primary"
                   onClick={handleEdit}
                 >
                   Edit
                 </Button>
                 <Button
+                  startIcon={<DeleteRounded />}
                   size="small"
-                  variant="outlined"
                   color="error"
                   onClick={handleDelete}
                 >

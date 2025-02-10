@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import TheConstrain from './TheConstrain';
 import { login, logout } from '../../logic/auth/service';
 import { useClientUser } from '../../logic/auth/react-hooks';
+import { Logo } from '../common/icons/Logo';
 
 function TheHeader() {
   const navigate = useNavigate();
@@ -50,9 +51,12 @@ function TheHeader() {
     <AppBar position="static" sx={{ backgroundColor: 'background.default' }}>
       <TheConstrain>
         <Toolbar sx={{ px: '0 !important' }}>
-          <Typography
-            variant="h6"
+          <Logo
+            onClick={() => {
+              navigate('/');
+            }}
             sx={{
+              width: '180px',
               flexGrow: 0,
               marginRight: 'auto',
               cursor: 'pointer',
@@ -61,16 +65,11 @@ function TheHeader() {
                 opacity: '0.8',
               },
               '&:active': {
-                transform: 'translateY(4px)',
+                transform: 'translateY(2px)',
               },
-              color: 'text.primary',
             }}
-            onClick={() => {
-              navigate('/');
-            }}
-          >
-            Instruction<span style={{ fontWeight: 'bold' }}>HUB</span>
-          </Typography>
+          />
+
           <Box>
             {!user && (
               <>
