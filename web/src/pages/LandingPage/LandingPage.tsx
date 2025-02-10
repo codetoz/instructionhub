@@ -18,7 +18,11 @@ import React from 'react';
 function LandingPage() {
   const theme = useTheme();
   const clientUser = useClientUser();
-  const { data: instructions, error } = useUserInstructions(clientUser?.id);
+  const {
+    data: instructions,
+    error,
+    isLoading,
+  } = useUserInstructions(clientUser?.id);
   return (
     <Box
       sx={{
@@ -142,7 +146,7 @@ function LandingPage() {
               gap: 2,
             }}
           >
-            {!instructions && !error
+            {isLoading && !error
               ? Array.from({ length: 3 }).map((_, i) => (
                   <InstructionCardSkeleton key={i} />
                 ))

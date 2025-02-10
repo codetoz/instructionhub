@@ -127,7 +127,12 @@ function InstructionDetailsPage() {
               <ContentCopyRounded />
             </IconButton>
           </Box>
-          <Typography color="textSecondary" variant="body1" component="pre">
+          <Typography
+            color="textSecondary"
+            variant="body1"
+            component="pre"
+            sx={{ textWrap: 'wrap' }}
+          >
             {instruction?.content}
           </Typography>
         </TheConstrain>
