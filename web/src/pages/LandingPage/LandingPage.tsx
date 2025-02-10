@@ -9,9 +9,11 @@ import {
 } from '@mui/material';
 import { GitHub } from '@mui/icons-material';
 import InstructionCard from '../../components/instruction/InstructionCard';
+import InstructionCardSkeleton from '../../components/instruction/InstructionCardSkeleton';
 import TheConstrain from '../../components/layout/TheConstrain';
 import { useClientUser } from '../../logic/auth/react-hooks';
 import { useUserInstructions } from '../../logic/instruction/react-hooks';
+import React from 'react';
 
 function LandingPage() {
   const theme = useTheme();
@@ -140,21 +142,25 @@ function LandingPage() {
               gap: 2,
             }}
           >
-            {instructions?.map((i) => (
-              <InstructionCard
-                key={i.id}
-                title={i.title}
-                id={i.id}
-                description={i.description}
-                groupId={i.groupId}
-                updatedAt={new Date(i.updatedAt)}
-                version=""
-                slug={i.slug}
-                userId={i.createdBy}
-                // starsCount={Math.floor(Math.random() * 10)}
-                // clientUserGaveStar={Math.random() > 0.5 ? true : false}
-              />
-            ))}
+            {!instructions && !error
+              ? Array.from({ length: 3 }).map((_, i) => (
+                  <InstructionCardSkeleton key={i} />
+                ))
+              : instructions?.map((i) => (
+                  <InstructionCard
+                    key={i.id}
+                    title={i.title}
+                    id={i.id}
+                    description={i.description}
+                    groupId={i.groupId}
+                    updatedAt={new Date(i.updatedAt)}
+                    version=""
+                    slug={i.slug}
+                    userId={i.createdBy}
+                    // starsCount={Math.floor(Math.random() * 10)}
+                    // clientUserGaveStar={Math.random() > 0.5 ? true : false}
+                  />
+                ))}
           </Box>
         </TheConstrain>
       </Box>
