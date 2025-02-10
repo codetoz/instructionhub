@@ -22,4 +22,5 @@ export interface InstructionDetails {
   groupId?: string;
   createdAt: string;
   updatedAt: string;
+  version?: string;
 }
