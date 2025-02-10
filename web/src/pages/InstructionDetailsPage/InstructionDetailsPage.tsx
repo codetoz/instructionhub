@@ -9,7 +9,6 @@ import {
   Button,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { mutate } from 'swr';
 import { deleteInstruction } from '../../logic/instruction/service';
 import { toast } from 'react-toastify';
 import TheConstrain from '../../components/layout/TheConstrain';
@@ -57,10 +56,6 @@ function InstructionDetailsPage() {
       toast.success('Instruction copied to clipboard successfully.');
     });
   }, [instruction]);
-
-  useEffect(() => {
-    console.log(error);
-  }, [error]);
 
   if (
     error &&

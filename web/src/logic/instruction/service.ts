@@ -5,6 +5,7 @@ import { getClientUser } from '../auth/service';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 import useAuthStore from '../auth/store';
+import { openConfirmationDialog } from '../../components/modals/api';
 
 export async function getInstructions() {
   const response = await apiClient.get('/instructions');
@@ -71,16 +72,22 @@ export async function updateInstruction(
 }
 
 export async function deleteInstruction(id: string) {
-  try {
-    const response = await apiClient.delete(`/instructions/${id}`);
-    const clientUser = useAuthStore.getState().user;
-    mutate(`users/${clientUser?.id}/instructions`);
-    toast.success('Instruction deleted successfully');
-    return response.data;
-  } catch (e) {
-    toast.error('Failed to delete instruction');
-    throw e;
-  }
+  openConfirmationDialog({
+    title: 'Delete Instruction',
+    contentText: 'Are you sure you want to delete this instruction?',
+    onConfirm: async () => {
+      try {
+        const response = await apiClient.delete(`/instructions/${id}`);
+        const clientUser = useAuthStore.getState().user;
+        mutate(`users/${clientUser?.id}/instructions`);
+        toast.success('Instruction deleted successfully');
+        return response.data;
+      } catch (e) {
+        toast.error('Failed to delete instruction');
+        throw e;
+      }
+    },
+  });
 }
 
 export async function fetchUserInstructions(userId?: string) {
