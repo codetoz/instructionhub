@@ -57,6 +57,11 @@ export async function updateInstruction(
   return response.data;
 }
 
+export async function deleteInstruction(id: string) {
+  const response = await apiClient.delete(`/instructions/${id}`);
+  return response.data;
+}
+
 export async function fetchUserInstructions(userId?: string) {
   if (!userId) return undefined;
   const response = await apiClient.get<InstructionDetails[]>(
