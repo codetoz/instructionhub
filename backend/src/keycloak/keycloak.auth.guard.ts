@@ -27,7 +27,7 @@ export class KeycloakAuthGuard extends AuthGuard('bearer') {
     ) as KeycloakConfig
     this.kcPublicKey = kcConfig.publicKey
 
-    Logger.debug('kcPublicKey: ' + this.kcPublicKey, 'KeycloakAuthGuard')
+    // Logger.debug('kcPublicKey: ' + this.kcPublicKey, 'KeycloakAuthGuard')
   }
 
   async canActivate(context: ExecutionContext) {
