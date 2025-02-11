@@ -73,22 +73,25 @@ export async function updateInstruction(
 }
 
 export async function deleteInstruction(id: string) {
-  openConfirmationDialog({
-    title: 'Delete Instruction',
-    contentText: 'Are you sure you want to delete this instruction?',
-    onConfirm: async () => {
-      try {
-        closeCurrentModal();
-        const response = await apiClient.delete(`/instructions/${id}`);
-        const clientUser = useAuthStore.getState().user;
-        mutate(`users/${clientUser?.id}/instructions`);
-        toast.success('Instruction deleted successfully');
-        return response.data;
-      } catch (e) {
-        toast.error('Failed to delete instruction');
-        throw e;
-      }
-    },
+  return new Promise<void>((resolve, reject) => {
+    openConfirmationDialog({
+      title: 'Delete Instruction',
+      contentText: 'Are you sure you want to delete this instruction?',
+      onConfirm: async () => {
+        try {
+          closeCurrentModal();
+          const response = await apiClient.delete(`/instructions/${id}`);
+          resolve();
+          const clientUser = useAuthStore.getState().user;
+          mutate(`users/${clientUser?.id}/instructions`);
+          toast.success('Instruction deleted successfully');
+          return response.data;
+        } catch (e) {
+          reject(e);
+          toast.error('Failed to delete instruction');
+        }
+      },
+    });
   });
 }
 
