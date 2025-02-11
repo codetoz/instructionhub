@@ -1,9 +1,8 @@
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import { SWRConfig } from 'swr';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material';
 import AppRoutes from './routes/AppRoutes';
-import { useEffect } from 'react';
 
 const theme = createTheme({
   palette: {
